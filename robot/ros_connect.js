@@ -4,11 +4,16 @@ var messages_received_body = [];
 var commands_sent_body = [];
 var messages_received_wrist = [];
 var commands_sent_wrist = [];
-var rosImageReceived = false
-var img = document.createElement("IMG")
-img.style.visibility = 'hidden'
 var rosJointStateReceived = false
 var jointState = null
+
+var d435iImageReceived = false
+var d435iImg = document.createElement("IMG")
+d435iImg.style.visibility = 'hidden'
+
+var gripperImageReceived = false
+var gripperImg = document.createElement("IMG")
+gripperImg.style.visibility = 'hidden'
 
 var session_body = {ws:null, ready:false, port_details:{}, port_name:"", version:"", commands:[], hostname:"", serial_ports:[]};
 
@@ -32,29 +37,36 @@ ros.on('close', function() {
     console.log('Connection to websocket has been closed.');
 });
 
-var imageTopic = new ROSLIB.Topic({
+var gripperImageTopic = new ROSLIB.Topic({
+    ros : ros,
+    name : '/gripper_camera/image_raw/compressed',
+    messageType : 'sensor_msgs/CompressedImage'
+});
+
+
+gripperImageTopic.subscribe(function(message) {
+    gripperImg.src = 'data:image/jpg;base64,' + message.data
+
+    if (gripperImageReceived === false) {
+	console.log('Received first compressed image from ROS topic ' + gripperImageTopic.name);
+	gripperImageReceived = true
+    }
+});
+
+var d435iImageTopic = new ROSLIB.Topic({
     ros : ros,
     name : '/camera/color/image_raw/compressed',
     messageType : 'sensor_msgs/CompressedImage'
 });
 
-imageTopic.subscribe(function(message) {
-    //console.log('Received compressed image on ' + imageTopic.name);
-    //console.log('message.header =', message.header)
-    //console.log('message.format =', message.format)
-    
-    img.src = 'data:image/jpg;base64,' + message.data
 
-    if (rosImageReceived === false) {
-	console.log('Received first compressed image from ROS topic ' + imageTopic.name);
-	rosImageReceived = true
+d435iImageTopic.subscribe(function(message) {
+    d435iImg.src = 'data:image/jpg;base64,' + message.data
+
+    if (d435iImageReceived === false) {
+	console.log('Received first compressed image from ROS topic ' + d435iImageTopic.name);
+	d435iImageReceived = true
     }
-    //console.log('img.width =', img.width)
-    //console.log('img.height =', img.height)
-    //console.log('img.naturalWidth =', img.naturalWidth)
-    //console.log('img.naturalHeight =', img.naturalHeight)
-    //console.log('attempted to draw image to the canvas')
-    //imageTopic.unsubscribe()
 });
 
 
