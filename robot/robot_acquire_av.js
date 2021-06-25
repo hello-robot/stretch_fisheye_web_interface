@@ -41,7 +41,33 @@ var editedVideoStream = videoEditingCanvas.captureStream(editedFps);
 
 function drawVideo() {
     var d;
+    
+    if (navigationImageReceived === true) {
+	var navigationRotation = 90.0 * degToRad;
+	
+	videoEditingContext.fillStyle="black";
+	videoEditingContext.fillRect(0, 0, editedDim.w, editedDim.h);
+	videoEditingContext.translate(editedDim.w/2, editedDim.h/2);
+	videoEditingContext.rotate(navigationRotation);
+	videoEditingContext.drawImage(navigationImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
+	videoEditingContext.rotate(-navigationRotation);
+	videoEditingContext.translate(-editedDim.w/2, -editedDim.h/2);
+    }
+    
 
+    // if (gripperImageReceived === true) {
+    // 	var gripperRotation = 90.0 * degToRad;
+	
+    // 	videoEditingContext.fillStyle="black";
+    // 	videoEditingContext.fillRect(0, 0, editedDim.w, editedDim.h);
+    // 	videoEditingContext.translate(editedDim.w/2, editedDim.h/2);
+    // 	videoEditingContext.rotate(gripperRotation);
+    // 	videoEditingContext.drawImage(gripperImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
+    // 	videoEditingContext.rotate(-gripperRotation);
+    // 	videoEditingContext.translate(-editedDim.w/2, -editedDim.h/2);
+    // }
+    
+    
     // if (d435iImageReceived === true) {
     // 	//var d435iRotation = -90.0 * degToRad;
     // 	var d435iRotation = 90.0 * degToRad;
@@ -54,20 +80,6 @@ function drawVideo() {
     // 	videoEditingContext.rotate(-d435iRotation);
     // 	videoEditingContext.translate(-editedDim.w/2, -editedDim.h/2);
     // }
-
-
-    if (gripperImageReceived === true) {
-	var gripperRotation = 90.0 * degToRad;
-	
-	videoEditingContext.fillStyle="black";
-	videoEditingContext.fillRect(0, 0, editedDim.w, editedDim.h);
-	videoEditingContext.translate(editedDim.w/2, editedDim.h/2);
-	videoEditingContext.rotate(gripperRotation);
-	videoEditingContext.drawImage(gripperImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
-	videoEditingContext.rotate(-gripperRotation);
-	videoEditingContext.translate(-editedDim.w/2, -editedDim.h/2);
-    }
-    
     
     requestAnimationFrame(drawVideo);
 }

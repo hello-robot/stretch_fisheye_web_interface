@@ -7,13 +7,20 @@ var commands_sent_wrist = [];
 var rosJointStateReceived = false
 var jointState = null
 
-var d435iImageReceived = false
-var d435iImg = document.createElement("IMG")
-d435iImg.style.visibility = 'hidden'
+// initialize images for camera video
+
+var navigationImageReceived = false
+var navigationImg = document.createElement("IMG")
+navigationImg.style.visibility = 'hidden'
 
 var gripperImageReceived = false
 var gripperImg = document.createElement("IMG")
 gripperImg.style.visibility = 'hidden'
+
+var d435iImageReceived = false
+var d435iImg = document.createElement("IMG")
+d435iImg.style.visibility = 'hidden'
+
 
 var session_body = {ws:null, ready:false, port_details:{}, port_name:"", version:"", commands:[], hostname:"", serial_ports:[]};
 
@@ -35,6 +42,25 @@ ros.on('error', function(error) {
 
 ros.on('close', function() {
     console.log('Connection to websocket has been closed.');
+});
+
+
+// subscribe to cameras
+
+var navigationImageTopic = new ROSLIB.Topic({
+    ros : ros,
+    name : '/navigation_camera/image_raw/compressed',
+    messageType : 'sensor_msgs/CompressedImage'
+});
+
+
+navigationImageTopic.subscribe(function(message) {
+    navigationImg.src = 'data:image/jpg;base64,' + message.data
+
+    if (navigationImageReceived === false) {
+	console.log('Received first compressed image from ROS topic ' + navigationImageTopic.name);
+	navigationImageReceived = true
+    }
 });
 
 var gripperImageTopic = new ROSLIB.Topic({
@@ -69,6 +95,8 @@ d435iImageTopic.subscribe(function(message) {
     }
 });
 
+
+// subscribe to joint state
 
 function getJointEffort(jointStateMessage, jointName) {
     var jointIndex = jointStateMessage.name.indexOf(jointName)
@@ -125,6 +153,7 @@ jointStateTopic.subscribe(function(message) {
 });
 
 
+// connect to follow joint trajectory action server
 
 var trajectoryClient = new ROSLIB.ActionClient({
     ros : ros,
