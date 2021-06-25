@@ -6,8 +6,8 @@ echo "Starting gripper camera installation script."
 # UDEV FOR GRIPPER CAMERA
 echo ""
 echo "Adding udev rules for the gripper camera."
-echo "roscd stretch_web_interface/"
-roscd stretch_web_interface/
+echo "cd ~/catkin_ws/src/stretch_web_interface/"
+cd ~/catkin_ws/src/stretch_web_interface/
 echo "sudo cp ./89-hello-gripper-camera.rules /etc/udev/rules.d/"
 sudo cp ./89-hello-gripper-camera.rules /etc/udev/rules.d/
 echo "sudo udevadm control --reload"
