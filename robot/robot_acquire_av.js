@@ -23,11 +23,10 @@ var editedFps = 15;
 var videoEditingCanvas = document.createElement('canvas');
 var videoDisplayElement = document.querySelector('video');
 
-var camDim = {w:videoDimensions.w, h:videoDimensions.h};
+var camDim = {w:videoDimensions.camW, h:videoDimensions.camH};
 console.log('camDim', camDim);
 
-// Make room for -90 deg rotation due to D435i orientation.
-var editedDim = {w:camDim.h, h:camDim.w}
+var editedDim = {w:videoDimensions.w, h:videoDimensions.h};
 
 var handRoll = 0.0;  
 var degToRad = (2.0* Math.PI)/360.0;
@@ -39,47 +38,67 @@ videoEditingContext.fillStyle="black";
 videoEditingContext.fillRect(0, 0, editedDim.w, editedDim.h);
 var editedVideoStream = videoEditingCanvas.captureStream(editedFps);
 
+
+var rotateNavCanvas = document.createElement('canvas');
+rotateNavCanvas.width = camDim.w;
+rotateNavCanvas.height = camDim.h;
+var rotateNavContext = rotateNavCanvas.getContext('2d');
+rotateNavContext.fillStyle="black";
+rotateNavContext.fillRect(0, 0, camDim.w, camDim.h);
+
+
+function render(drawable, dim) {
+    // s = source, d = destination
+    //void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
+
+    var d = dim;
+    videoEditingContext.drawImage(drawable,
+				  d.sx, d.sy, d.sw, d.sh,
+				  d.dx, d.dy, d.dw, d.dh);
+}
+
+function renderImage(camKey, drawable) {
+    var videoKey = cameraToVideoMapping[camKey];
+
+    switch(videoKey) {
+    case 'big':
+	render(drawable, videoDimensions.big);
+        break;
+    case 'smallTop':
+	render(drawable, videoDimensions.smallTop);
+        break;
+    case 'smallBot':
+	render(drawable, videoDimensions.smallBot);
+	break;
+    default:
+	console.log('ERROR: drawVideo given unrecognized key argument = ', videoKey);
+    }
+}
+
+
 function drawVideo() {
-    var d;
+    //renderImage('nav', navVideoElement);
+    //renderImage('hand', armVideoElement);
     
     if (navigationImageReceived === true) {
 	var navigationRotation = 90.0 * degToRad;
 	
-	videoEditingContext.fillStyle="black";
-	videoEditingContext.fillRect(0, 0, editedDim.w, editedDim.h);
-	videoEditingContext.translate(editedDim.w/2, editedDim.h/2);
-	videoEditingContext.rotate(navigationRotation);
-	videoEditingContext.drawImage(navigationImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
-	videoEditingContext.rotate(-navigationRotation);
-	videoEditingContext.translate(-editedDim.w/2, -editedDim.h/2);
-    }
-    
+	rotateNavContext.fillStyle="black";
+	rotateNavContext.fillRect(0, 0, camDim.w, camDim.h);
+	rotateNavContext.translate(camDim.w/2, camDim.h/2);
+	rotateNavContext.rotate(navigationRotation);
+	rotateNavContext.drawImage(navigationImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
+	rotateNavContext.rotate(-navigationRotation);
+	rotateNavContext.translate(-camDim.w/2, -camDim.h/2);
 
-    // if (gripperImageReceived === true) {
-    // 	var gripperRotation = 90.0 * degToRad;
+	render(rotateNavCanvas, videoDimensions.leftDim);
 	
-    // 	videoEditingContext.fillStyle="black";
-    // 	videoEditingContext.fillRect(0, 0, editedDim.w, editedDim.h);
-    // 	videoEditingContext.translate(editedDim.w/2, editedDim.h/2);
-    // 	videoEditingContext.rotate(gripperRotation);
-    // 	videoEditingContext.drawImage(gripperImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
-    // 	videoEditingContext.rotate(-gripperRotation);
-    // 	videoEditingContext.translate(-editedDim.w/2, -editedDim.h/2);
-    // }
-    
-    
-    // if (d435iImageReceived === true) {
-    // 	//var d435iRotation = -90.0 * degToRad;
-    // 	var d435iRotation = 90.0 * degToRad;
+    }
+
+    if (gripperImageReceived === true) {
 	
-    // 	videoEditingContext.fillStyle="black";
-    // 	videoEditingContext.fillRect(0, 0, editedDim.w, editedDim.h);
-    // 	videoEditingContext.translate(editedDim.w/2, editedDim.h/2);
-    // 	videoEditingContext.rotate(d435iRotation);
-    // 	videoEditingContext.drawImage(d435iImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
-    // 	videoEditingContext.rotate(-d435iRotation);
-    // 	videoEditingContext.translate(-editedDim.w/2, -editedDim.h/2);
-    // }
+	render(gripperImg, videoDimensions.rightDim);
+    }
     
     requestAnimationFrame(drawVideo);
 }

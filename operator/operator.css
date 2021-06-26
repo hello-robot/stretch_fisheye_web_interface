@@ -22,15 +22,17 @@
 
 #remoteVideo {
     position:absolute;
+    width:100%;
     top: 144px;
     left: 10px;
-    /*height:80%; */
+    /*height:80%;*/
     height: 620px;
     z-index:1;
 }
 
 #video_ui_overlay {
     position:absolute;
+    width:100%;
     top: 144px;
     left: 10px;
     /*top: calc(0.23 * var(--video-height));*/ /*144px;*/
