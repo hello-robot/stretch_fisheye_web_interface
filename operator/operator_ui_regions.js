@@ -43,12 +43,18 @@ function turnModeUiOn(modeKey) {
     // switch like this.
     document.getElementById(buttonName).checked = true
     //arrangeOverlays(modeKey)
-    for (var key in modeRegions) {
-	if (key !== modeKey) {
-	    modeRegions[key].map(hideSvg)
-	}
+    if (modeKey == 'nav') {
+	arrangeOverlays('nav', 'hand')
+	modeRegions['nav'].map(showSvg)
+	modeRegions['hand'].map(showSvg)
+	//modeRegions[key].map(hideSvg)
     }
-    modeRegions[modeKey].map(showSvg)
+    if (modeKey == 'hand') {
+	arrangeOverlays('hand','nav')
+	modeRegions['nav'].map(showSvg)
+	modeRegions['hand'].map(showSvg)
+	//modeRegions[key].map(hideSvg)
+    }
 }
 
 
@@ -126,11 +132,18 @@ function createUiRegions(debug) {
     /////// GRIPPER VIDEO ////////
     color = 'white'
 
-    bgRect = makeRectangle(camW, 0, camW, camH);
-    tpRect = makeRectangle(camW, 0, camW, camH/4.0);
-    btRect = makeRectangle(camW, 3.0*(h/4.0), camW, camH/4.0);
-    smRect = makeRectangle(camW + (camW/3.0), 2.0*(camH/5.0), camW/3.0, camH/5.0);
+    //bgRect = makeRectangle(camW, 0, camW, camH);
+    //tpRect = makeRectangle(camW, 0, camW, camH/4.0);
+    //btRect = makeRectangle(camW, 3.0*(h/4.0), camW, camH/4.0);
+    //smRect = makeRectangle(camW + (camW/3.0), 2.0*(camH/5.0), camW/3.0, camH/5.0);
+
+
+    bgRect = makeRectangle(0, 0, camW, camH);
+    tpRect = makeRectangle(0, 0, camW, camH/4.0);
+    btRect = makeRectangle(0, 3.0*(h/4.0), camW, camH/4.0);
+    smRect = makeRectangle(0 + (camW/3.0), 2.0*(camH/5.0), camW/3.0, camH/5.0);
         
+    
     regionPoly = rectToPoly(smRect);
     setRegionPoly('hand_close_region', regionPoly, color);
 
@@ -245,26 +258,43 @@ function createUiRegions(debug) {
 
 
 
-// function arrangeOverlays(key) {
-//     ///////////////////////
-//     var nx, ny, nw, nh;
-
-//     var w = videoDimensions.w
-//     var h = videoDimensions.h
-
-//     nx = 0
-//     ny = 0
-//     nw = w
-//     nh = h
-//     var bigViewBox = String(nx) + ' ' + String(ny) + ' ' + String(nw) + ' ' + String(nh);
-
-//     var overlayName = key + '_ui_overlay'
-//     var overlay = document.getElementById(overlayName);
-//     overlay.setAttribute('viewBox', bigViewBox);
+function arrangeOverlays(leftKey, rightKey) {
+    ///////////////////////
+    var nx, ny, nw, nh;
     
-// }
+    var d = videoDimensions.leftDim;
+    nx = d.dx;
+    ny = d.dy;
+    nw = d.dw;
+    nh = d.dh;
+    var leftViewBox = String(nx) + ' ' + String(ny) + ' ' + String(nw) + ' ' + String(nh);
 
-
+    d = videoDimensions.rightDim;
+    nx = -d.dx;
+    ny = -d.dy;
+    nw = d.dw;
+    nh = d.dh;
+    var rightViewBox = String(nx) + ' ' + String(ny) + ' ' + String(nw) + ' ' + String(nh);
+    
+    var navOverlay = document.getElementById('nav_ui_overlay');
+    var handOverlay = document.getElementById('hand_ui_overlay');
+    
+    function setViewBox(videoKey, viewBox) {
+	switch(videoKey) {
+	case 'nav':
+	    navOverlay.setAttribute('viewBox', viewBox);
+            break;
+	case 'hand':
+	    handOverlay.setAttribute('viewBox', viewBox);
+	    break;
+	default:
+	    console.log('ERROR: arrangeOverlays given unrecognized key argument = ', videoKey);
+	}
+    }
+   
+    setViewBox(leftKey, leftViewBox);
+    setViewBox(rightKey, rightViewBox);
+}
 
 
 function VelocityUi(elementId, commands, cursor) {
