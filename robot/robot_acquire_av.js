@@ -48,6 +48,7 @@ rotateNavContext.fillRect(0, 0, camDim.w, camDim.h);
 
 
 function render(drawable, dim) {
+    //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
     // s = source, d = destination
     //void ctx.drawImage(image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight);
 

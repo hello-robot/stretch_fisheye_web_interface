@@ -247,17 +247,6 @@ function robotModeOn(modeKey) {
 	console.log('sending navigation pose to head')	
     }
 
-    if (modeKey === 'low_arm') {
-	var headManPoseGoal = generatePoseGoal({'joint_head_pan': -1.57, 'joint_head_tilt': -0.9})
-	headManPoseGoal.send()
-	console.log('sending manipulation pose to head')	
-    }
-
-    if (modeKey === 'high_arm') {
-	var headManPoseGoal = generatePoseGoal({'joint_head_pan': -1.57, 'joint_head_tilt': -0.45})
-	headManPoseGoal.send()
-	console.log('sending manipulation pose to head')
-    }
 }
 
 ////////////////////////////////////////////////////////////////////////////////////

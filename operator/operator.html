@@ -29,19 +29,11 @@
     <div>
       <div class="switch">
 	<input type="radio" class="switch-input" name="mode-switch" value="nav" id="nav_mode_button" checked>
-	<label for="nav_mode_button" class="switch-label switch-label-0" onclick="turnModeOn('nav')">Drive</label>
-	
-	<input type="radio" class="switch-input" name="mode-switch" value="low_arm" id="low_arm_mode_button">
-	<label for="low_arm_mode_button" class="switch-label switch-label-1" onclick="turnModeOn('low_arm')">Arm &dArr;</label>
-	
-	<input type="radio" class="switch-input" name="mode-switch" value="high_arm" id="high_arm_mode_button">
-	<label for="high_arm_mode_button" class="switch-label switch-label-2" onclick="turnModeOn('high_arm')">Arm &uArr;</label>
+	<label for="nav_mode_button" class="switch-label switch-label-0" onclick="turnModeOn('nav')">Navigate</label>
 	
 	<input type="radio" class="switch-input" name="mode-switch" value="hand" id="hand_mode_button">
-	<label for="hand_mode_button" class="switch-label switch-label-3" onclick="turnModeOn('hand')">Hand</label>
+	<label for="hand_mode_button" class="switch-label switch-label-1" onclick="turnModeOn('hand')">Manipulate</label>
 	
-	<input type="radio" class="switch-input" name="mode-switch" value="look" id="look_mode_button">
-	<label for="look_mode_button" class="switch-label switch-label-4" onclick="turnModeOn('look')">Look</label>
 	<span class="switch-selection"></span>	
       </div>
       
@@ -55,7 +47,6 @@
 
     </div>
     
-
     
     <div id="video_div">
       <video id="remoteVideo" autoplay></video>

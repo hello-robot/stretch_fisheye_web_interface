@@ -1,7 +1,6 @@
 
 :root {
-    --mode-button-width: 55px;
-    /* --mode-button-width: 15%; */
+    --mode-button-width: 100px;
 }
 
 /* #video_div { */
@@ -172,8 +171,7 @@
   position: relative;
   /*margin: 20px auto;*/
   height: 52px; /*26px;*/
-  /* width:  calc(var(--mode-button-width) * 6); */
-  width:  calc(var(--mode-button-width) * 5);
+  width:  calc(var(--mode-button-width) * 2);
   background: rgba(0, 0, 0, 0.25);
   border-radius: 3px;
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
@@ -232,23 +230,6 @@
 .switch-input:checked + .switch-label-1 ~ .switch-selection {
     left: calc(var(--mode-button-width) * 1);
 }
-
-.switch-input:checked + .switch-label-2 ~ .switch-selection {
-    left: calc(var(--mode-button-width) * 2); 
-}
-
-.switch-input:checked + .switch-label-3 ~ .switch-selection {
-    left: calc(var(--mode-button-width) * 3);
-}
-
-.switch-input:checked + .switch-label-4 ~ .switch-selection {
-    left: calc(var(--mode-button-width) * 4);
-}
-
-/* .switch-input:checked + .switch-label-5 ~ .switch-selection { */
-/*     left: calc(var(--mode-button-width) * 5); */
-/* } */
-
 
 .switch-selection {
   display: block;

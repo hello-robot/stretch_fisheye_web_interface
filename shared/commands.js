@@ -317,7 +317,7 @@ function turnModeOn(modeKey) {
     turnModeUiOn(modeKey)
 }
 
-modeKeys = ['nav', 'low_arm', 'high_arm', 'hand', 'look']
+modeKeys = ['nav', 'hand']
 
 function createModeCommands() {
     modeCommands = {}
