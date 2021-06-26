@@ -57,47 +57,36 @@ function render(drawable, dim) {
 				  d.dx, d.dy, d.dw, d.dh);
 }
 
-function renderImage(camKey, drawable) {
-    var videoKey = cameraToVideoMapping[camKey];
-
-    switch(videoKey) {
-    case 'big':
-	render(drawable, videoDimensions.big);
-        break;
-    case 'smallTop':
-	render(drawable, videoDimensions.smallTop);
-        break;
-    case 'smallBot':
-	render(drawable, videoDimensions.smallBot);
-	break;
-    default:
-	console.log('ERROR: drawVideo given unrecognized key argument = ', videoKey);
-    }
-}
-
-
 function drawVideo() {
-    //renderImage('nav', navVideoElement);
-    //renderImage('hand', armVideoElement);
-    
-    if (navigationImageReceived === true) {
-	var navigationRotation = 90.0 * degToRad;
-	
-	rotateNavContext.fillStyle="black";
-	rotateNavContext.fillRect(0, 0, camDim.w, camDim.h);
-	rotateNavContext.translate(camDim.w/2, camDim.h/2);
-	rotateNavContext.rotate(navigationRotation);
-	rotateNavContext.drawImage(navigationImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
-	rotateNavContext.rotate(-navigationRotation);
-	rotateNavContext.translate(-camDim.w/2, -camDim.h/2);
 
-	render(rotateNavCanvas, videoDimensions.leftDim);
-	
+    if(interfaceMode == 'nav'){
+	if (navigationImageReceived === true) {
+	    var navigationRotation = 90.0 * degToRad;
+	    
+	    rotateNavContext.fillStyle="black";
+	    rotateNavContext.fillRect(0, 0, camDim.w, camDim.h);
+	    rotateNavContext.translate(camDim.w/2, camDim.h/2);
+	    rotateNavContext.rotate(navigationRotation);
+	    rotateNavContext.drawImage(navigationImg, -camDim.w/2, -camDim.h/2, camDim.w, camDim.h)
+	    rotateNavContext.rotate(-navigationRotation);
+	    rotateNavContext.translate(-camDim.w/2, -camDim.h/2);
+
+	    render(rotateNavCanvas, videoDimensions.leftDim);
+	}
+
+	if (gripperImageReceived === true) {
+	    render(gripperImg, videoDimensions.rightDim);
+	}
     }
 
-    if (gripperImageReceived === true) {
-	
-	render(gripperImg, videoDimensions.rightDim);
+    if(interfaceMode == 'hand') {
+	if (navigationImageReceived === true) {
+	    render(navigationImg, videoDimensions.rightDim);
+	}
+
+	if (gripperImageReceived === true) {
+	    render(gripperImg, videoDimensions.leftDim);
+	}
     }
     
     requestAnimationFrame(drawVideo);
