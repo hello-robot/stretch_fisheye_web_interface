@@ -97,34 +97,11 @@
             >
 	    <title>turn right</title>
 	  </path>
-
-	</svg>
-
-	
-	<svg id="low_arm_ui_overlay" preserveAspectRatio="xMinYMid">
-
-          <path
-            fill-opacity="0.0"
-            stroke-opacity="1.0"
-            id="low_arm_down_region"
-            onclick="liftDownMedium()"   
-            >
-            <title>arm down</title>
-          </path>
-	  
-	  <path
-            fill-opacity="0.0"
-            stroke-opacity="1.0"
-            id="low_arm_up_region"
-            onclick="liftUpMedium()"   
-            >
-            <title>arm up</title>
-	  </path>
 	  
           <path
             fill-opacity="0.0"
             stroke-opacity="1.0"
-            id="low_arm_retract_region"
+            id="nav_arm_retract_region"
             onclick="armRetractMedium()"   
             >
             <title>retract arm</title>
@@ -133,32 +110,15 @@
           <path
             fill-opacity="0.0"
             stroke-opacity="1.0"
-            id="low_arm_extend_region"
+            id="nav_arm_extend_region"
             onclick="armExtendMedium()"   
             >
             <title>extend arm</title>
           </path>
 	  
-          <path
-            fill-opacity="0.0"
-            stroke-opacity="1.0"
-            id="low_arm_base_forward_region"
-            onclick="moveForwardMedium()"
-            >
-            <title>move forward</title>
-          </path>
 
-	  <path
-            fill-opacity="0.0"
-            stroke-opacity="1.0"
-            id="low_arm_base_backward_region"
-            onclick="moveBackwardMedium()"
-            >
-            <title>move backward</title>
-          </path>
-	  
 	</svg>
-	
+
 	<svg id="hand_ui_overlay" preserveAspectRatio="xMinYMid">
 
           <path
@@ -195,6 +155,24 @@
             onclick="wristOut()"   
             >
             <title>gripper out</title>
+	  </path>
+	    
+	  <path
+            fill-opacity="0.0"
+            stroke-opacity="1.0"
+            id="hand_arm_up_region"
+            onclick="liftUpMedium()"   
+            >
+            <title>arm up</title>
+	  </path>
+	    
+          <path
+            fill-opacity="0.0"
+            stroke-opacity="1.0"
+            id="hand_arm_down_region"
+            onclick="liftDownMedium()"   
+            >
+            <title>arm down</title>
           </path>
 
 	</svg>

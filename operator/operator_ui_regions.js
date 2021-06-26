@@ -93,165 +93,117 @@ function createUiRegions(debug) {
     var video_region = document.getElementById('video_ui_overlay');
     video_region.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
     //////////////////////////////
-            
-    //////////////////////////////
-    
-    var sqrW, bgSqr, mdSqr, smSqr, regionPoly;
-    var mdBar, smBar, mHoriz, lHoriz, rHoriz, mVert; 
-    var color;
 
-    var bgRect, smRect, tpRect, btRect;
     
     ///////  NAVIGATION MODE  ///////
 
     /////// NAVIGATION VIDEO ////////
-    color = 'white'
+    var color = 'white'
 
     // big rectangle at the borders of the video
-    bgRect = makeRectangle(0, 0, camW, camH);
-    // small rectangle around the mobile base
-    //var smRect = makeSquare(w*(7.0/16.0), h*(7.0/16.0), w/8.0, h/8.0);
-    smRect = makeSquare((camW/2.0)-(camW/20.0), (camH*(3.0/4.0))-(camH/20.0), camW/10.0, camH/10.0); 
+    var bgRect = makeRectangle(0, 0, camW, camH);
 
-    regionPoly = rectToPoly(smRect);
+    var arm_region_width = camW/5.0;
+    var navRect = makeRectangle(arm_region_width, 0,
+				camW - (2.0*arm_region_width), camH);
+    
+    var mobile_base_width = camW/10.0;
+    var mobile_base_height = camH/10.0;
+    
+    // small rectangle around the mobile base
+    var baseRect = makeSquare((camW/2.0) - (mobile_base_width/2.0),
+			      (camH/2.0) - (mobile_base_height/2.0),
+			      mobile_base_width, mobile_base_height); 
+
+    var regionPoly = rectToPoly(baseRect);
     setRegionPoly('nav_do_nothing_region', regionPoly, color);
 
-    regionPoly = [bgRect.ul, bgRect.ur, smRect.ur, smRect.ul];
+    regionPoly = [navRect.ul, navRect.ur, baseRect.ur, baseRect.ul];
     setRegionPoly('nav_forward_region', regionPoly, color);
 
-    regionPoly = [bgRect.ll, bgRect.lr, smRect.lr, smRect.ll];
+    regionPoly = [navRect.ll, navRect.lr, baseRect.lr, baseRect.ll];
     setRegionPoly('nav_backward_region', regionPoly, color);
 
-    regionPoly = [bgRect.ul, smRect.ul, smRect.ll, bgRect.ll];
+    regionPoly = [navRect.ul, baseRect.ul, baseRect.ll, navRect.ll];
     setRegionPoly('nav_turn_left_region', regionPoly, color);
 
-    regionPoly = [bgRect.ur, smRect.ur, smRect.lr, bgRect.lr];
+    regionPoly = [navRect.ur, baseRect.ur, baseRect.lr, navRect.lr];
     setRegionPoly('nav_turn_right_region', regionPoly, color);
+			
+    regionPoly = [bgRect.ul, navRect.ul, navRect.ll, bgRect.ll];
+    setRegionPoly('nav_arm_retract_region', regionPoly, color);
 
-
+    regionPoly = [navRect.ur, bgRect.ur, bgRect.lr, navRect.lr];
+    setRegionPoly('nav_arm_extend_region', regionPoly, color);
+    
     /////// GRIPPER VIDEO ////////
     color = 'white'
 
-    //bgRect = makeRectangle(camW, 0, camW, camH);
-    //tpRect = makeRectangle(camW, 0, camW, camH/4.0);
-    //btRect = makeRectangle(camW, 3.0*(h/4.0), camW, camH/4.0);
-    //smRect = makeRectangle(camW + (camW/3.0), 2.0*(camH/5.0), camW/3.0, camH/5.0);
-
-
-    bgRect = makeRectangle(0, 0, camW, camH);
-    tpRect = makeRectangle(0, 0, camW, camH/4.0);
-    btRect = makeRectangle(0, 3.0*(h/4.0), camW, camH/4.0);
-    smRect = makeRectangle(0 + (camW/3.0), 2.0*(camH/5.0), camW/3.0, camH/5.0);
-        
+    var wrist_region_width = camW/5.0;
+    var lift_region_height = camH/5.0;
+    var handRect = makeRectangle(wrist_region_width, lift_region_height,
+				 camW - (2.0*wrist_region_width),
+				 camH - (2.0*lift_region_height));
     
-    regionPoly = rectToPoly(smRect);
+    var fingertip_width = camW/5.0;
+    var fingertip_height = camH/5.0;
+    
+    var fingertipRect = makeRectangle((camW/2.0) - (fingertip_width/2.0),
+				      (camH/2.0) - (fingertip_height/2.0),
+				      fingertip_width, fingertip_height);
+
+    var liftUpRect = makeRectangle(0, 0,
+				   camW, lift_region_height);
+    var liftDownRect = makeRectangle(0, camH - lift_region_height,
+				     camW, lift_region_height);
+    
+    var wristInRect = makeRectangle(0, lift_region_height,
+				    wrist_region_width, camH - (2.0*lift_region_height));
+    var wristOutRect = makeRectangle(camW - wrist_region_width, lift_region_height,
+				     wrist_region_width, camH - (2.0*lift_region_height));
+
+    regionPoly = rectToPoly(fingertipRect);
     setRegionPoly('hand_close_region', regionPoly, color);
+    
+    regionPoly = [wristInRect.ur, wristOutRect.ul, wristOutRect.ll, fingertipRect.lr,
+		  fingertipRect.ur, fingertipRect.ul, fingertipRect.ll, fingertipRect.lr,
+		  wristOutRect.ll, wristInRect.lr];
+    setRegionPoly('hand_open_region', regionPoly, color);
 
-    regionPoly = rectToPoly(tpRect);
-    setRegionPoly('hand_out_region', regionPoly, color);
-
-    regionPoly = rectToPoly(btRect);
+    regionPoly = rectToPoly(wristInRect);
     setRegionPoly('hand_in_region', regionPoly, color);
 
-    regionPoly = [tpRect.ll, tpRect.lr, btRect.ur, btRect.ul, tpRect.ll,
-		  smRect.ul, smRect.ll, smRect.lr, smRect.ur, smRect.ul];
-    setRegionPoly('hand_open_region', regionPoly, color);
-        
-    navModeRegionIds = ['nav_do_nothing_region', 'nav_forward_region', 'nav_backward_region', 'nav_turn_left_region', 'nav_turn_right_region', 'hand_close_region', 'hand_out_region', 'hand_in_region', 'hand_open_region']
+    regionPoly = rectToPoly(wristOutRect);
+    setRegionPoly('hand_out_region', regionPoly, color);
+
+    regionPoly = rectToPoly(liftUpRect);
+    setRegionPoly('hand_arm_up_region', regionPoly, color);
+
+    regionPoly = rectToPoly(liftDownRect);
+    setRegionPoly('hand_arm_down_region', regionPoly, color);
+    
+    navModeRegionIds = ['nav_do_nothing_region',
+			'nav_forward_region', 'nav_backward_region',
+			'nav_turn_left_region', 'nav_turn_right_region',
+			'nav_arm_retract_region', 'nav_arm_extend_region',
+			'hand_close_region', 'hand_open_region',
+			'hand_in_region', 'hand_out_region', 
+			'hand_arm_up_region', 'hand_arm_down_region'];
 
 
     ///////  MANIPULATION MODE  ///////
 
     // /////// NAVIGATION VIDEO ////////
 
-    handModeRegionIds = ['nav_do_nothing_region', 'nav_forward_region', 'nav_backward_region', 'nav_turn_left_region', 'nav_turn_right_region', 'hand_close_region', 'hand_out_region', 'hand_in_region', 'hand_open_region']
-    
-    // ///////////////////////
-    // color = 'white'
-
-    // // big rectangle at the borders of the video
-    // bgRect = makeRectangle(0, 0, w, h);
-    // // small rectangle at the top of the middle of the video
-    // var tpRect = makeRectangle(w*(3.0/10.0), h/4.0, w*(4.0/10.0), h/4.0);
-    // // small rectangle at the bottom of the middle of the video
-    // var btRect = makeRectangle(w*(3.0/10.0), h/2.0, w*(4.0/10.0), h/4.0);
-    
-    // regionPoly = rectToPoly(tpRect);
-    // setRegionPoly('low_arm_up_region', regionPoly, color);
-
-    // regionPoly = rectToPoly(btRect);
-    // setRegionPoly('low_arm_down_region', regionPoly, color);
-    
-    // regionPoly = [bgRect.ul, bgRect.ur, tpRect.ur, tpRect.ul];
-    // setRegionPoly('low_arm_extend_region', regionPoly, color);
-
-    // regionPoly = [bgRect.ll, bgRect.lr, btRect.lr, btRect.ll];
-    // setRegionPoly('low_arm_retract_region', regionPoly, color);
-
-    // regionPoly = [bgRect.ul, tpRect.ul, btRect.ll, bgRect.ll];
-    // setRegionPoly('low_arm_base_forward_region', regionPoly, color);
-
-    // regionPoly = [bgRect.ur, tpRect.ur, btRect.lr, bgRect.lr];
-    // setRegionPoly('low_arm_base_backward_region', regionPoly, color);
-    
-    // lowArmModeRegionIds = ['low_arm_down_region', 'low_arm_up_region', 'low_arm_extend_region', 'low_arm_retract_region','low_arm_base_forward_region','low_arm_base_backward_region']
-    
-
-    // ///////////////////////
-    // color = 'white'
-
-    // // big rectangle at the borders of the video
-    // bgRect = makeRectangle(0, 0, w, h);
-    // // small rectangle at the top of the middle of the video
-    // tpRect = makeRectangle(w*(3.0/10.0), h/4.0, w*(4.0/10.0), h/4.0);
-    // // small rectangle at the bottom of the middle of the video
-    // btRect = makeRectangle(w*(3.0/10.0), h/2.0, w*(4.0/10.0), h/4.0);
-    
-    // regionPoly = rectToPoly(tpRect);
-    // setRegionPoly('high_arm_up_region', regionPoly, color);
-
-    // regionPoly = rectToPoly(btRect);
-    // setRegionPoly('high_arm_down_region', regionPoly, color);
-    
-    // regionPoly = [bgRect.ul, bgRect.ur, tpRect.ur, tpRect.ul];
-    // setRegionPoly('high_arm_extend_region', regionPoly, color);
-
-    // regionPoly = [bgRect.ll, bgRect.lr, btRect.lr, btRect.ll];
-    // setRegionPoly('high_arm_retract_region', regionPoly, color);
-
-    // regionPoly = [bgRect.ul, tpRect.ul, btRect.ll, bgRect.ll];
-    // setRegionPoly('high_arm_base_forward_region', regionPoly, color);
-
-    // regionPoly = [bgRect.ur, tpRect.ur, btRect.lr, bgRect.lr];
-    // setRegionPoly('high_arm_base_backward_region', regionPoly, color);
-    
-    // highArmModeRegionIds = ['high_arm_down_region', 'high_arm_up_region', 'high_arm_extend_region', 'high_arm_retract_region','high_arm_base_forward_region','high_arm_base_backward_region']
-    
-
-    // ///////////////////////
-    // color = 'white'
-
-    // tpRect = makeRectangle(0, 0, w, h/4.0);
-    // btRect = makeRectangle(0, 3.0*(h/4.0), w, h/4.0);
-    // var ltRect = makeRectangle(0, h/4.0, w/2.0, h/2.0);
-    // var rtRect = makeRectangle(w/2.0, h/4.0, w/2.0, h/2.0);
+    handModeRegionIds = ['nav_do_nothing_region',
+			'nav_forward_region', 'nav_backward_region',
+			'nav_turn_left_region', 'nav_turn_right_region',
+			'nav_arm_retract_region', 'nav_arm_extend_region',
+			'hand_close_region', 'hand_open_region',
+			'hand_in_region', 'hand_out_region', 
+			'hand_arm_up_region', 'hand_arm_down_region'];
 
     
-    // regionPoly = rectToPoly(tpRect);
-    // setRegionPoly('look_up_region', regionPoly, color);
-
-    // regionPoly = rectToPoly(btRect);
-    // setRegionPoly('look_down_region', regionPoly, color);
-
-    // regionPoly = rectToPoly(ltRect);
-    // setRegionPoly('look_left_region', regionPoly, color);
-
-    // regionPoly = rectToPoly(rtRect);
-    // setRegionPoly('look_right_region', regionPoly, color);
-    
-    // lookModeRegionIds = ['look_up_region', 'look_down_region', 'look_left_region', 'look_right_region']
-
-
     modeRegions = { 'nav' : navModeRegionIds,
 		    'hand' : handModeRegionIds}
 }
