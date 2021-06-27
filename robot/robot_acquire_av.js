@@ -82,7 +82,7 @@ function drawVideo() {
 
     if(interfaceMode == 'hand') {
 	if (navigationImageReceived === true) {
-	    render(navigationImg, videoDimensions.rightDim);
+	    render(navigationImg, videoDimensions.rightZoomDim);
 	}
 
 	if (gripperImageReceived === true) {

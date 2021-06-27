@@ -13,6 +13,8 @@ function generateVideoDimensions() {
     // cameras)
     var camW = 320;
     var camH = 240;
+
+    var aspectRatio = camW/camH;
     
     var cameraFpsIdeal = 15.0;
 
@@ -37,8 +39,22 @@ function generateVideoDimensions() {
 		    dw: camW,
 		    dh: camH};
 
-
-    return {w:iw, h:ih, camW:camW, camH:camH, cameraFpsIdeal:cameraFpsIdeal, leftDim:leftDim, rightDim:rightDim};
+    var zoom = 1.5
+    var rightZoomDim = {sx: camW / 5.0,
+			sy: 0,
+			sw: camW / zoom,
+			sh: camH / zoom,
+			dx: camW,
+			dy: 0,
+			dw: camW,
+			dh: camH};
+    
+    return {w:iw, h:ih,
+	    camW:camW, camH:camH,
+	    cameraFpsIdeal:cameraFpsIdeal,
+	    leftDim:leftDim, rightDim:rightDim, rightZoomDim:rightZoomDim};
 }
 
 var videoDimensions = generateVideoDimensions();
+
+
