@@ -4,9 +4,23 @@
 
 This is a distinct version of the Stretch RE1 web interface that uses a wide-angle gripper camera and a wide-angle navigation camera.
 
+## Wide-angle Cameras
+
+<img src="./images/wide_angle_cameras.jpg" width="300">
+
 The interface expects the wide-angle gripper camera to be attached as far down the gripper as it can be (i.e., as close to the fingers as it can be). It expects the navigation camera to be attached to the top of the head and positioned so that it is pointing straight down at the ground and looking at the center front of the mobile base. The top of the navigation camera should be pointed in the direction that the telescoping arm extends.
 
 The gripper camera should be plugged into the wrist USB port, and the navigation camera should be plugged into the head USB port. Nothing else should be plugged into these ports, since bandwidth is limited and the udev rules use the USB port topology to find and distinguish the gripper and navigation cameras.
+
+## Example of Use
+
+Screenshots from using this interface to pick up and navigate with a computer mouse follow:
+
+<img src="./images/wide_angle_test_1.png" width="800">
+<img src="./images/wide_angle_test_2.png" width="800">
+<img src="./images/wide_angle_test_3.png" width="800">
+
+## Limitations
 
 Limitations of this version include the following:
 
