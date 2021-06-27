@@ -42,24 +42,24 @@ function turnModeUiOn(modeKey) {
     // others to false, or find out how to appropriately utilize a
     // switch like this.
     document.getElementById(buttonName).checked = true
-    //arrangeOverlays(modeKey)
     if (modeKey == 'nav') {
 	arrangeOverlays('nav', 'hand')
 	modeRegions['nav'].map(showSvg)
 	modeRegions['hand'].map(showSvg)
-	//modeRegions[key].map(hideSvg)
+	modeRegions['hand_nav'].map(hideSvg)
     }
     if (modeKey == 'hand') {
-	arrangeOverlays('hand','nav')
-	modeRegions['nav'].map(showSvg)
+	arrangeOverlays('hand','hand_nav')
+	modeRegions['nav'].map(hideSvg)
 	modeRegions['hand'].map(showSvg)
-	//modeRegions[key].map(hideSvg)
+	modeRegions['hand_nav'].map(showSvg)
     }
 }
 
 
 var navModeRegionIds;
 var handModeRegionIds;
+var handNavModeRegionIds;
 var modeRegions;
 
 function createUiRegions(debug) {
@@ -95,9 +95,7 @@ function createUiRegions(debug) {
     //////////////////////////////
 
     
-    ///////  NAVIGATION MODE  ///////
-
-    /////// NAVIGATION VIDEO ////////
+    /////// NAVIGATION MODE NAVIGATION VIDEO ////////
     var color = 'white'
 
     // big rectangle at the borders of the video
@@ -135,6 +133,12 @@ function createUiRegions(debug) {
 
     regionPoly = [navRect.ur, bgRect.ur, bgRect.lr, navRect.lr];
     setRegionPoly('nav_arm_extend_region', regionPoly, color);
+    
+    navModeRegionIds = ['nav_do_nothing_region',
+			'nav_forward_region', 'nav_backward_region',
+			'nav_turn_left_region', 'nav_turn_right_region',
+			'nav_arm_retract_region', 'nav_arm_extend_region']
+    
     
     /////// GRIPPER VIDEO ////////
     color = 'white'
@@ -181,31 +185,59 @@ function createUiRegions(debug) {
 
     regionPoly = rectToPoly(liftDownRect);
     setRegionPoly('hand_arm_down_region', regionPoly, color);
+
+    handModeRegionIds = ['hand_close_region', 'hand_open_region',
+			 'hand_in_region', 'hand_out_region', 
+			 'hand_arm_up_region', 'hand_arm_down_region'];
+
     
-    navModeRegionIds = ['nav_do_nothing_region',
-			'nav_forward_region', 'nav_backward_region',
-			'nav_turn_left_region', 'nav_turn_right_region',
-			'nav_arm_retract_region', 'nav_arm_extend_region',
-			'hand_close_region', 'hand_open_region',
-			'hand_in_region', 'hand_out_region', 
-			'hand_arm_up_region', 'hand_arm_down_region'];
+    /////// MANIPULATION MODE NAVIGATION VIDEO ////////
+    color = 'white'
 
+    // big rectangle at the borders of the video
+    bgRect = makeRectangle(0, 0, camW, camH);
 
-    ///////  MANIPULATION MODE  ///////
+    arm_region_width = camW/5.0;
+    navRect = makeRectangle(arm_region_width, 0,
+				camW - (2.0*arm_region_width), camH);
+    
+    mobile_base_width = camW/10.0;
+    mobile_base_height = camH/10.0;
+    
+    // small rectangle around the mobile base
+    baseRect = makeSquare((camW/2.0) - (mobile_base_width/2.0),
+			      (camH/2.0) - (mobile_base_height/2.0),
+			      mobile_base_width, mobile_base_height); 
 
-    // /////// NAVIGATION VIDEO ////////
+    regionPoly = rectToPoly(baseRect);
+    setRegionPoly('hand_nav_do_nothing_region', regionPoly, color);
 
-    handModeRegionIds = ['nav_do_nothing_region',
-			'nav_forward_region', 'nav_backward_region',
-			'nav_turn_left_region', 'nav_turn_right_region',
-			'nav_arm_retract_region', 'nav_arm_extend_region',
-			'hand_close_region', 'hand_open_region',
-			'hand_in_region', 'hand_out_region', 
-			'hand_arm_up_region', 'hand_arm_down_region'];
+    regionPoly = [navRect.ul, navRect.ur, baseRect.ur, baseRect.ul];
+    setRegionPoly('hand_nav_forward_region', regionPoly, color);
 
+    regionPoly = [navRect.ll, navRect.lr, baseRect.lr, baseRect.ll];
+    setRegionPoly('hand_nav_backward_region', regionPoly, color);
+
+    regionPoly = [navRect.ul, baseRect.ul, baseRect.ll, navRect.ll];
+    setRegionPoly('hand_nav_turn_left_region', regionPoly, color);
+
+    regionPoly = [navRect.ur, baseRect.ur, baseRect.lr, navRect.lr];
+    setRegionPoly('hand_nav_turn_right_region', regionPoly, color);
+			
+    regionPoly = [bgRect.ul, navRect.ul, navRect.ll, bgRect.ll];
+    setRegionPoly('hand_nav_arm_retract_region', regionPoly, color);
+
+    regionPoly = [navRect.ur, bgRect.ur, bgRect.lr, navRect.lr];
+    setRegionPoly('hand_nav_arm_extend_region', regionPoly, color);
+
+    handNavModeRegionIds = ['hand_nav_do_nothing_region',
+			    'hand_nav_forward_region', 'hand_nav_backward_region',
+			    'hand_nav_turn_left_region', 'hand_nav_turn_right_region',
+			    'hand_nav_arm_retract_region', 'hand_nav_arm_extend_region'];
     
     modeRegions = { 'nav' : navModeRegionIds,
-		    'hand' : handModeRegionIds}
+		    'hand' : handModeRegionIds,
+		    'hand_nav' : handNavModeRegionIds}
 }
 
 
@@ -230,6 +262,7 @@ function arrangeOverlays(leftKey, rightKey) {
     
     var navOverlay = document.getElementById('nav_ui_overlay');
     var handOverlay = document.getElementById('hand_ui_overlay');
+    var handNavOverlay = document.getElementById('hand_nav_ui_overlay');
     
     function setViewBox(videoKey, viewBox) {
 	switch(videoKey) {
@@ -238,6 +271,9 @@ function arrangeOverlays(leftKey, rightKey) {
             break;
 	case 'hand':
 	    handOverlay.setAttribute('viewBox', viewBox);
+	    break;
+	case 'hand_nav':
+	    handNavOverlay.setAttribute('viewBox', viewBox);
 	    break;
 	default:
 	    console.log('ERROR: arrangeOverlays given unrecognized key argument = ', videoKey);
