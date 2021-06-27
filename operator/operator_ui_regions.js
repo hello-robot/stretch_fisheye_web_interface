@@ -197,41 +197,55 @@ function createUiRegions(debug) {
     // big rectangle at the borders of the video
     bgRect = makeRectangle(0, 0, camW, camH);
 
-    arm_region_width = camW/5.0;
-    navRect = makeRectangle(arm_region_width, 0,
-				camW - (2.0*arm_region_width), camH);
+    var turn_region_width = camW/5.0;
+    var arm_region_height = camH/3.0;
     
+    navRect = makeRectangle(turn_region_width, 0,
+			    camW - (2.0*turn_region_width), camH);
+
     mobile_base_width = camW/10.0;
     mobile_base_height = camH/10.0;
     
     // small rectangle around the mobile base
     baseRect = makeSquare((camW/2.0) - (mobile_base_width/2.0),
-			      (camH/2.0) - (mobile_base_height/2.0),
-			      mobile_base_width, mobile_base_height); 
+			  (2.0*(camH/3.0)) - (mobile_base_height/2.0),
+			  mobile_base_width, mobile_base_height);
 
-    regionPoly = rectToPoly(baseRect);
-    setRegionPoly('hand_nav_do_nothing_region', regionPoly, color);
+    var turnLeftRect = makeRectangle(0, 0, turn_region_width, camH);
+    var turnRightRect = makeRectangle(camW-turn_region_width, 0, turn_region_width, camH);
+    
+    var armExtendRect = makeRectangle(turn_region_width, 0,
+				      camW - (2.0*turn_region_width), arm_region_height);
+    var armRetractRect = makeRectangle(turn_region_width, camH - arm_region_height,
+				       camW - (2.0*turn_region_width), arm_region_height);
 
-    regionPoly = [navRect.ul, navRect.ur, baseRect.ur, baseRect.ul];
-    setRegionPoly('hand_nav_forward_region', regionPoly, color);
-
-    regionPoly = [navRect.ll, navRect.lr, baseRect.lr, baseRect.ll];
-    setRegionPoly('hand_nav_backward_region', regionPoly, color);
-
-    regionPoly = [navRect.ul, baseRect.ul, baseRect.ll, navRect.ll];
+    var base_region_width = (camW/2.0)-turn_region_width;
+    
+    var baseForwardRect = makeRectangle(turn_region_width, arm_region_height,
+					base_region_width, camH-(2.0*arm_region_height));
+    var baseBackwardRect = makeRectangle(turn_region_width + base_region_width, arm_region_height,
+					 base_region_width, camH-(2.0*arm_region_height));
+    
+    
+    regionPoly = rectToPoly(turnLeftRect);
     setRegionPoly('hand_nav_turn_left_region', regionPoly, color);
 
-    regionPoly = [navRect.ur, baseRect.ur, baseRect.lr, navRect.lr];
+    regionPoly = rectToPoly(turnRightRect);
     setRegionPoly('hand_nav_turn_right_region', regionPoly, color);
-			
-    regionPoly = [bgRect.ul, navRect.ul, navRect.ll, bgRect.ll];
+    
+    regionPoly = rectToPoly(baseForwardRect);
+    setRegionPoly('hand_nav_forward_region', regionPoly, color);
+
+    regionPoly = rectToPoly(baseBackwardRect);
+    setRegionPoly('hand_nav_backward_region', regionPoly, color);
+
+    regionPoly = rectToPoly(armRetractRect);
     setRegionPoly('hand_nav_arm_retract_region', regionPoly, color);
 
-    regionPoly = [navRect.ur, bgRect.ur, bgRect.lr, navRect.lr];
+    regionPoly = rectToPoly(armExtendRect);
     setRegionPoly('hand_nav_arm_extend_region', regionPoly, color);
-
-    handNavModeRegionIds = ['hand_nav_do_nothing_region',
-			    'hand_nav_forward_region', 'hand_nav_backward_region',
+			
+    handNavModeRegionIds = ['hand_nav_forward_region', 'hand_nav_backward_region',
 			    'hand_nav_turn_left_region', 'hand_nav_turn_right_region',
 			    'hand_nav_arm_retract_region', 'hand_nav_arm_extend_region'];
     

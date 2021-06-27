@@ -95,17 +95,12 @@
     cursor: url('down_arrow_medium.png'), auto;
 }
 
-
-#hand_nav_do_nothing_region {
-    cursor: not-allowed; 
-}
-
 #hand_nav_forward_region {
-    cursor: url('up_arrow_medium.png'), auto;
+    cursor: url('left_arrow_medium.png'), auto;
 }
 
 #hand_nav_backward_region {
-    cursor: url('down_arrow_medium.png'), auto;
+    cursor: url('right_arrow_medium.png'), auto;
 }
 
 #hand_nav_turn_left_region {
@@ -117,11 +112,11 @@
 }
 
 #hand_nav_arm_retract_region {
-    cursor: url('left_arrow_medium.png'), auto;
+    cursor: url('down_arrow_medium.png'), auto;
 }
 
 #hand_nav_arm_extend_region {
-    cursor: url('right_arrow_medium.png'), auto;
+    cursor: url('up_arrow_medium.png'), auto;
 }
 
 /***************************************************/
