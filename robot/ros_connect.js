@@ -17,11 +17,6 @@ var gripperImageReceived = false
 var gripperImg = document.createElement("IMG")
 gripperImg.style.visibility = 'hidden'
 
-var d435iImageReceived = false
-var d435iImg = document.createElement("IMG")
-d435iImg.style.visibility = 'hidden'
-
-
 var session_body = {ws:null, ready:false, port_details:{}, port_name:"", version:"", commands:[], hostname:"", serial_ports:[]};
 
 var session_wrist = {ws:null, ready:false, port_details:{}, port_name:"", version:"", commands:[], hostname:"", serial_ports:[]};
@@ -76,22 +71,6 @@ gripperImageTopic.subscribe(function(message) {
     if (gripperImageReceived === false) {
 	console.log('Received first compressed image from ROS topic ' + gripperImageTopic.name);
 	gripperImageReceived = true
-    }
-});
-
-var d435iImageTopic = new ROSLIB.Topic({
-    ros : ros,
-    name : '/camera/color/image_raw/compressed',
-    messageType : 'sensor_msgs/CompressedImage'
-});
-
-
-d435iImageTopic.subscribe(function(message) {
-    d435iImg.src = 'data:image/jpg;base64,' + message.data
-
-    if (d435iImageReceived === false) {
-	console.log('Received first compressed image from ROS topic ' + d435iImageTopic.name);
-	d435iImageReceived = true
     }
 });
 

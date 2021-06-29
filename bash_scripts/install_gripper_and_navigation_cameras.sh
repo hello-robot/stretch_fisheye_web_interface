@@ -34,7 +34,8 @@ echo "sudo apt-get --yes install ros-melodic-usb-cam"
 sudo apt-get --yes install ros-melodic-usb-cam
 echo "Done."
 
-# CHANGE UVCVIDEO SETTINGS TO PERMIT BOTH CAMERAS TO WORK AT THE SAME TIME AT LOW RESOLUTION (320x240)
+# CHANGE UVCVIDEO SETTINGS TO PERMIT BOTH CAMERAS TO WORK AT THE SAME
+# TIME AT LOW RESOLUTION (320x240) WITH UNCOMPRESSED YUYV 4:2:2 MODE
 echo ""
 echo "Change default uvcvideo kernal module settings to enable two quirks: UVC_QUIRK_RESTRICT_FRAME_RATE and UVC_QUIRK_FIX_BANDWIDTH."
 echo "cd ~/catkin_ws/src/stretch_web_interface/"

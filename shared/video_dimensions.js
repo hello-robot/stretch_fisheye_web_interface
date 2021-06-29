@@ -5,18 +5,20 @@ function generateVideoDimensions() {
 
     // Full dimensions of the WebRTC video transmitted from the robot
     // to the operator. Use only the navigation camera and the gripper
-    // camera side by side, each of which is currently 320x240.
-    var iw = 640;
-    var ih = 240;
+    // camera side by side.
+    var iw = 2048;
+    var ih = 768;
 
     // wide-angle camera dimensions (i.e., gripper and navigation
     // cameras)
-    var camW = 320;
-    var camH = 240;
+    var camW = 1024;
+    var camH = 768;
 
     var aspectRatio = camW/camH;
-    
-    var cameraFpsIdeal = 15.0;
+
+    var cameraFpsIdeal = 20.0;
+    // var cameraFpsIdeal = 15.0;
+    // var cameraFpsIdeal = 30.0;
 
     //https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
 
