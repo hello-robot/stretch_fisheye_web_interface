@@ -1,5 +1,33 @@
 ![](./images/banner.png)
 
+# Wide-angle Cameras Interface
+
+This is a distinct version of the Stretch RE1 web interface that uses a wide-angle gripper camera and a wide-angle navigation camera.
+
+## Wide-angle Cameras
+
+<img src="./images/wide_angle_cameras.jpg" width="300">
+
+The interface expects the wide-angle gripper camera to be attached as far down the gripper as it can be (i.e., as close to the fingers as it can be). It expects the navigation camera to be attached to the top of the head and positioned so that it is pointing straight down at the ground and looking at the center front of the mobile base. The top of the navigation camera should be pointed in the direction that the telescoping arm extends.
+
+The gripper camera should be plugged into the wrist USB port, and the navigation camera should be plugged into the head USB port. Nothing else should be plugged into these ports, since bandwidth is limited and the udev rules use the USB port topology to find and distinguish the gripper and navigation cameras.
+
+## Example of Use
+
+Screenshots from using this interface to pick up and navigate with a computer mouse follow:
+
+<img src="./images/wide_angle_test_1.png" width="800">
+<img src="./images/wide_angle_test_2.png" width="800">
+<img src="./images/wide_angle_test_3.png" width="800">
+
+## Limitations
+
+Limitations of this version include the following:
+
++ The video is low resolution. 320x240 for each camera due to USB bandwidth issues. 640x480 would be much better. Hardware changes might make this possible in the future, but software is unlikely to improve the resolution with the current cameras.
++ The video is a little distorted. It is slightly elongated in one direction for each camera. This distortion doesn't appear in 640x480 mode. It seems to be an issue with the 320x240 mode for these USB cameras. This could be corrected with software, but I'm hopeful that future hardware improvements will resolve this.
++ The interface video has large unused black regions. The individual gripper and navigation videos could be cropped or otherwise transformed to make better use of the video display.
+
 # Table of Contents
 
 + [Overview](#over)
