@@ -2,13 +2,13 @@
 
 # Wide-angle Cameras Interface
 
-This branch is a distinct version of the Stretch RE1 web interface that uses a wide-angle gripper camera and a wide-angle navigation camera. It specifically uses prototype wide-angle camera accessories developed by [Hello Robot](https://hello-robot.com). If you're interested in wide-angle cameras for the Stretch RE1, please post to [Hello Robot's forum](https://forum.hello-robot.com/) or email Hello Robot at <info@hello-robot.com>. The cameras and web interface are based on early prototypes for remote teleoperation developed at Georgia Tech and Hello Robot prior to the Stretch RE1. 
+This repository holds a distinct version of the [original Stretch RE1 web interface](https://github.com/hello-robot/stretch_web_interface) that uses a fisheye gripper camera and a fisheye navigation camera. It specifically uses prototype fisheye camera accessories developed by [Hello Robot](https://hello-robot.com). If you're interested in fisheye cameras for the Stretch RE1, please post to [Hello Robot's forum](https://forum.hello-robot.com/) or email Hello Robot at <info@hello-robot.com>. The cameras and web interface are based on early prototypes for remote teleoperation developed at Georgia Tech and Hello Robot prior to the Stretch RE1. 
 
 <img src="./images/wide_angle_cameras.jpg" width="300">
 
 ## Install the Wide-angle Web Interface
 
-To install the wide-angle web interface, first follow the instructions in the [original web-interface installation section](#install) below. Then, use the commands below to install the wide-angle cameras  with [install_gripper_and_navigation_cameras.sh](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/wide_angle_cameras/bash_scripts/install_gripper_and_navigation_cameras.sh). 
+To install the fisheye web interface, first follow the instructions in the [web-interface installation section](#install) below. Then, use the following commands to install the wide-angle cameras  with [install_gripper_and_navigation_cameras.sh](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/wide_angle_cameras/bash_scripts/install_gripper_and_navigation_cameras.sh). 
 
 ```cd ~/catkin_ws/src/stretch_fisheye_web_interface/bash_scripts/```
 
