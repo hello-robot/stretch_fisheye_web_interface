@@ -33,15 +33,12 @@ The gripper camera should be plugged into the wrist USB port, and the navigation
 The following screenshot shows the new high-resolution interface, which uses 1024x768 resolution videos from the gripper and navigation cameras at 6 frames per second. Trading frames per second for higher resolution appears to be worthwhile, since the robot moves slowly and haptic feedback (joint torque visualization) updates frequently with low latency. Rapid haptic feedback helps compensate for the low video rate during teleoperation. For example, the operator can notice contact and send a compensatory command to the robot without video. The rate and latency of haptic feedback and commands to the robot are determined by the WebRTC real-time data channel, which is distinct from the WebRTC audio and video.  
 
 **Manipulation Mode**
+
 <img src="./images/high_resolution_wide_angle_example_1.png" width="800">
 
 **Navigation Mode**
+
 <img src="./images/high_resolution_wide_angle_example_2.png" width="800">
-
-Screenshots of the old low-resolution interface, which used 320x240 videos from the gripper and navigation cameras at 30 frames per second. These screenshots were taken while picking up a computer mouse and then navigating with it a short distance. 
-
-<img src="./images/wide_angle_test_2.png" width="800">
-<img src="./images/wide_angle_test_3.png" width="800">
 
 # Original Table of Contents
 
