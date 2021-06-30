@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>stretch_web_interface</name>
+  <name>stretch_fisheye_web_interface</name>
   <version>0.0.1</version>
-  <description>The stretch_web_interface package</description>
+  <description>The stretch_fisheye_web_interface package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
