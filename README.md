@@ -8,9 +8,9 @@ This branch is a distinct version of the Stretch RE1 web interface that uses a w
 
 ## Install the Wide-angle Web Interface
 
-To install the wide-angle web interface, first follow the instructions in the [original web-interface installation section](#install) below. Then, use the commands below to install the wide-angle cameras  with [install_gripper_and_navigation_cameras.sh](https://github.com/hello-robot/stretch_web_interface/blob/wide_angle_cameras/bash_scripts/install_gripper_and_navigation_cameras.sh). 
+To install the wide-angle web interface, first follow the instructions in the [original web-interface installation section](#install) below. Then, use the commands below to install the wide-angle cameras  with [install_gripper_and_navigation_cameras.sh](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/wide_angle_cameras/bash_scripts/install_gripper_and_navigation_cameras.sh). 
 
-```cd ~/catkin_ws/src/stretch_web_interface/bash_scripts/```
+```cd ~/catkin_ws/src/stretch_fisheye_web_interface/bash_scripts/```
 
 ```./install_gripper_and_navigation_cameras.sh```
 
@@ -67,7 +67,7 @@ This repository holds code that enables a person (the operator) to remotely tele
 
 When we started [Hello Robot Inc.](https://hello-robot.com) back in 2017, part of our goal was to create a robot that could be intuitively teleoperated from afar. We took an iterative approach, building a series of 7 prototype robots before the Stretch RE1 that we sell today. In conjunction with these prototypes, we developed a series of web interfaces, so that we could control our robots via a web browser and test remote teleoperation. While we eventually deemphasized this aspect of the robot, we thought it could be useful to the community. With this goal in mind, we ported parts of our old web interface code to the Stretch RE1 and made them available in this repository back in June of 2020.
 
-Since then, we've been gratified to learn of others working with this code. For example, [The Human Centered Robotics Lab](https://hcrlab.cs.washington.edu/) at the University Washington has made impressive improvements to the code, which can be found in [their repository](https://github.com/hcrlab/stretch_web_interface). We've also learned that the [The Human Factors and Aging Laboratory](https://hfaging.ahs.illinois.edu/) at the University of Illinois at Urbana-Champaign has explored this interface as part of their impressive research to improve the lives of older adults.
+Since then, we've been gratified to learn of others working with this code. For example, [The Human Centered Robotics Lab](https://hcrlab.cs.washington.edu/) at the University Washington has made impressive improvements to the code, which can be found in [their repository](https://github.com/hcrlab/stretch_fisheye_web_interface). We've also learned that the [The Human Factors and Aging Laboratory](https://hfaging.ahs.illinois.edu/) at the University of Illinois at Urbana-Champaign has explored this interface as part of their impressive research to improve the lives of older adults.
 
 <a name="browsers"/>
 
@@ -75,11 +75,11 @@ Since then, we've been gratified to learn of others working with this code. For 
 
 This web interface works via [Web Real-Time Communication (WebRTC)](https://en.wikipedia.org/wiki/WebRTC). Code runs in a browser on the robot, in a browser on the operator's device (e.g., a mobile phone), and on a server. This is analogous to the robot and the operator video conferencing with one another, although they communicate via realtime data in addition to audio and video. By using web browsers, the robot and the operator make use of well-tested high-performance implementations of WebRTC. This symmetry also simplifies development, since a developer can use the same browser-based developer tools on both sides of the communication. The robot's browser and the operator's browser first login to the server, which helps connect them and provides them with the interface code.
 
-The robot’s browser uses [rosbridge](http://wiki.ros.org/rosbridge_suite) to connect with ROS on the robot. Rosbridge translates [JSON](https://en.wikipedia.org/wiki/JSON) from the robot’s browser into ROS communications and vice versa. The JavaScript code used by the robot’s browser to connect with ROS can be found in [ros_connect.js](https://github.com/hello-robot/stretch_web_interface/blob/master/robot/ros_connect.js) under the [robot directory](https://github.com/hello-robot/stretch_web_interface/tree/master/robot), which holds files made available to the robot's browser. 
+The robot’s browser uses [rosbridge](http://wiki.ros.org/rosbridge_suite) to connect with ROS on the robot. Rosbridge translates [JSON](https://en.wikipedia.org/wiki/JSON) from the robot’s browser into ROS communications and vice versa. The JavaScript code used by the robot’s browser to connect with ROS can be found in [ros_connect.js](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/master/robot/ros_connect.js) under the [robot directory](https://github.com/hello-robot/stretch_fisheye_web_interface/tree/master/robot), which holds files made available to the robot's browser. 
 
-With [puppeteer](https://github.com/puppeteer/puppeteer) the robot can automatically launch and login to its browser. For example, [start_robot_browers.js](https://github.com/hello-robot/stretch_web_interface/blob/master/start_robot_browser.js) uses puppeteer to launch the robot's browser and login.
+With [puppeteer](https://github.com/puppeteer/puppeteer) the robot can automatically launch and login to its browser. For example, [start_robot_browers.js](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/master/start_robot_browser.js) uses puppeteer to launch the robot's browser and login.
 
-While the robot’s browser has access to most of the robot via ROS, the operator’s browser can only access the robot indirectly through the robot’s browser. The robotic commands available to the operator’s browser can be found in [commands.js](https://github.com/hello-robot/stretch_web_interface/blob/master/shared/commands.js) under the [shared directory](https://github.com/hello-robot/stretch_web_interface/tree/master/shared), which holds files available to both the operator's browser and the robot's browser. The operator's browser also has access to files in the [operator directory](https://github.com/hello-robot/stretch_web_interface/tree/master/operator).
+While the robot’s browser has access to most of the robot via ROS, the operator’s browser can only access the robot indirectly through the robot’s browser. The robotic commands available to the operator’s browser can be found in [commands.js](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/master/shared/commands.js) under the [shared directory](https://github.com/hello-robot/stretch_fisheye_web_interface/tree/master/shared), which holds files available to both the operator's browser and the robot's browser. The operator's browser also has access to files in the [operator directory](https://github.com/hello-robot/stretch_fisheye_web_interface/tree/master/operator).
 
 <a name="server"/>
 
@@ -89,7 +89,7 @@ In the example below, the server runs on the robot. In a production environment,
 
 The web server uses the [Express](https://expressjs.com/) web framework with [Pug](https://pugjs.org/api/getting-started.html) templates. The server provides a WebRTC [signaling service](https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/) using [socket.io](https://socket.io/). It uses [Redis](https://redis.io/) to store sessions. 
 
-[passport](http://www.passportjs.org/) provides authentication for the robot and the operator. [mongoose](https://mongoosejs.com/) and a [MongoDB](https://www.mongodb.com/) database store credentials for robots and operators. The *stretch_web_interface* repository comes with default MongoDB content found at [./mongodb/](./mongodb/) for testing behind a firewall. These default contents come with multiple robot and operator accounts. **Make sure not to use these default database contents on a deployed system!** 
+[passport](http://www.passportjs.org/) provides authentication for the robot and the operator. [mongoose](https://mongoosejs.com/) and a [MongoDB](https://www.mongodb.com/) database store credentials for robots and operators. The *stretch_fisheye_web_interface* repository comes with default MongoDB content found at [./mongodb/](./mongodb/) for testing behind a firewall. These default contents come with multiple robot and operator accounts. **Make sure not to use these default database contents on a deployed system!** 
 
 By default, [send_recv_av.js](./shared/send_recv_av.js) uses a free STUN server provided by Google. [The Amazon Lightsail example below](#server_lightsail) uses [coturn](https://github.com/coturn/coturn) as a [STUN and TURN server](https://www.html5rocks.com/en/tutorials/webrtc/infrastructure/).   
 
@@ -105,11 +105,11 @@ These installation instructions describe how to install both the server and rele
 
 The web interface depends on [stretch_ros](http://github.com/hello-robot/stretch_ros), which is used to control the robot. You should first make sure it is up-to-date and working properly on the robot.
 
-Clone the *stretch_web_interface* repository to ~/catkin_ws/src/ on the robot. 
+Clone the *stretch_fisheye_web_interface* repository to ~/catkin_ws/src/ on the robot. 
 
 ```
 cd ~/catkin_ws/src/
-git clone https://github.com/hello-robot/stretch_web_interface.git
+git clone https://github.com/hello-robot/stretch_fisheye_web_interface.git
 ```
 
 Run catkin_make.
@@ -123,7 +123,7 @@ rospack profile
 Run the installation script. 
 
 ```
-cd ~/catkin_ws/src/stretch_web_interface/bash_scripts/
+cd ~/catkin_ws/src/stretch_fisheye_web_interface/bash_scripts/
 ./web_interface_installation.sh
 ```
 
@@ -148,7 +148,7 @@ stretch_robot_home.py
 Next, in a terminal, run the following command to start ROS. This will start ROS nodes on the robot for the D435i camera, the driver for Stretch RE1, and rosbridge. Rosbridge connects JavaScript running in the robot's browser to ROS using JSON. 
 
 ```
-roslaunch stretch_web_interface web_interface.launch
+roslaunch stretch_fisheye_web_interface web_interface.launch
 ```
 
 #### Start the Web Server and the Robot's Browser
@@ -156,7 +156,7 @@ roslaunch stretch_web_interface web_interface.launch
 In another terminal, run the following command to start the web server on the robot, launch the robot's browser, and log the robot into the browser. The convenience script calls start_robot_browser.js, which uses [puppeteer](https://github.com/puppeteer/puppeteer) to log the robot into its browser.
 
 ```
-roscd stretch_web_interface/bash_scripts/
+roscd stretch_fisheye_web_interface/bash_scripts/
 ./start_web_server_and_robot_browser.sh 
 ```
 
@@ -222,7 +222,7 @@ stretch_robot_home.py
 Next, in a terminal, run the following command to start the ROS side of things. This will start ROS nodes on the robot for the D435i camera, the driver for Stretch RE1, and rosbridge. Rosbridge connects JavaScript running in the robot's browser to ROS using JSON. 
 
 ```
-roslaunch stretch_web_interface web_interface.launch
+roslaunch stretch_fisheye_web_interface web_interface.launch
 ```
 
 #### Start the Web Server
@@ -230,7 +230,7 @@ roslaunch stretch_web_interface web_interface.launch
 In another terminal, run the following command to start the web server on the robot. 
 
 ```
-roscd stretch_web_interface/bash_scripts/
+roscd stretch_fisheye_web_interface/bash_scripts/
 ./start_desktop_dev_env.sh 
 ```
 
@@ -351,12 +351,12 @@ This section describes the steps we used to create an Amazon Lightsail instance 
   + Clone this GitHub repository.
     + `cd`
     + `mkdir repos`
-    + `git clone https://github.com/hello-robot/stretch_web_interface.git`
+    + `git clone https://github.com/hello-robot/stretch_fisheye_web_interface.git`
   + Use [certbot](https://certbot.eff.org/) from [Let's Encrypt](https://letsencrypt.org/) to obtain certificates so that your server can use [Hypertext Transfer Protocol Secure (HTTPS)](https://en.wikipedia.org/wiki/HTTPS). HTTPS is required to fully utilize WebRTC. 
     + You will need to first connect your domain name to the static IP address used by your instance. 
     + Follow [certbot installation instructions for Ubuntu 20.04](https://certbot.eff.org/lets-encrypt/ubuntufocal-other).
   + Run the teleoperation server installation script
-    + `cd ~/repos/stretch_web_interface/bash_scripts/`
+    + `cd ~/repos/stretch_fisheye_web_interface/bash_scripts/`
     + `./web_server_installation.sh`
 + Initialize the database with secure credentials for at least one robot and one operator. For example, you can do the following. 
   + Create and export credentials from MongoDB by running a server on your robot. 
@@ -381,9 +381,9 @@ This section describes the steps we used to create an Amazon Lightsail instance 
   + Create TURN server accounts and credentials.
     + Create an administrator account.
       + `sudo turnadmin -A -u ADMIN-NAME -p ADMIN-PASSWORD`
-    + Create a TURN user. In the next step, you will add these credentials to `./stretch_web_interface/shared/send_recv_av.js`.
+    + Create a TURN user. In the next step, you will add these credentials to `./stretch_fisheye_web_interface/shared/send_recv_av.js`.
       + `sudo turnadmin -a -u TURN-USER-NAME -r YOUR-DOMAIN-NAME -p TURN-USER-PASSWORD`
-    + Open `./stretch_web_interface/shared/send_recv_av.js` in an editor.
+    + Open `./stretch_fisheye_web_interface/shared/send_recv_av.js` in an editor.
       + Comment out the free STUN server.
       + Uncomment the STUN and TURN servers and fill in the values using your domain name and the credentials you just created (i.e., YOUR-DOMAIN-NAME, TURN-USER-NAME, and TURN-USER-PASSWORD). 
           + The relevant code will look similar to `var pcConfig = { iceServers: [ {urls: "stun:YOUR-DOMAIN-NAME", username "TURN-USER-NAME", credentials: "TURN-USER-PASSWORD}, {urls: "turn:YOUR-DOMAIN-NAME", username "TURN-USER-NAME", credentials: "TURN-USER-PASSWORD}]};`
@@ -395,7 +395,7 @@ This section describes the steps we used to create an Amazon Lightsail instance 
   + `Custom UDP 5349`
 + Reboot your instance.
 + Login to your instance and run the following commands to start the server.
-  + `cd ~/repos/stretch_web_interface/bash_scripts/`
+  + `cd ~/repos/stretch_fisheye_web_interface/bash_scripts/`
   + `./start_server_production_env.sh`
 + Your server should now be running and you can test it by taking the following steps.
   + Turn on and calibrate your robot.
