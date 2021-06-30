@@ -2,11 +2,25 @@
 
 # Wide-angle Cameras Interface
 
-This is a distinct version of the Stretch RE1 web interface that uses a wide-angle gripper camera and a wide-angle navigation camera.
-
-## Wide-angle Cameras
+This branch is a distinct version of the Stretch RE1 web interface that uses a wide-angle gripper camera and a wide-angle navigation camera. It specifically uses prototype wide-angle camera accessories developed by [Hello Robot](https://hello-robot.com). If you're interested in wide-angle cameras for the Stretch RE1, please post to [Hello Robot's forum](https://forum.hello-robot.com/) or email Hello Robot at <info@hello-robot.com>. The cameras and web interface are based on early prototypes for remote teleoperation developed at Georgia Tech and Hello Robot prior to the Stretch RE1. 
 
 <img src="./images/wide_angle_cameras.jpg" width="300">
+
+## Install the Wide-angle Web Interface
+
+To install the wide-angle web interface, first follow the instructions in the [original web-interface installation section](#install) below. Then, use the commands below to install the wide-angle cameras  with [install_gripper_and_navigation_cameras.sh](https://github.com/hello-robot/stretch_web_interface/blob/wide_angle_cameras/bash_scripts/install_gripper_and_navigation_cameras.sh). 
+
+```cd ~/catkin_ws/src/stretch_web_interface/bash_scripts/```
+
+```./install_gripper_and_navigation_cameras.sh```
+
+This script first installs udev rules for both cameras that create the `/dev/hello-gripper-camera` and `/dev/hello-navigation-camera` device symlinks. For these udev rules to work, no other devices should be plugged into the head and wrist USB ports, since the rules use the USB bus and port topology to distinguish the two cameras. The script then installs `usb_cam`, which is a ROS USB camera package. Finally, the script copies a configuration file to `/etc/modprobe.d` that configures the `uvcvideo` kernel module to work with the cameras. After running this installation script, you either need to unplug and replug the two cameras or reboot the Stretch RE1's NUC computer. 
+
+## Run the Wide-angle Web Interface
+
+To run the wide-angle web interface, you can use the [original quick start instructions](#quick) below.
+
+## Physical Installation of the Wide-angle Cameras 
 
 The interface expects the wide-angle gripper camera to be attached as far down the gripper as it can be (i.e., as close to the fingers as it can be). It expects the navigation camera to be attached to the top of the head and positioned so that it is pointing straight down at the ground and looking at the center front of the mobile base. The top of the navigation camera should be pointed in the direction that the telescoping arm extends.
 
@@ -20,19 +34,10 @@ The following screenshot shows the new high-resolution interface, which uses 102
 
 Screenshots of the old low-resolution interface, which used 320x240 videos from the gripper and navigation cameras at 30 frames per second. These screenshots were taken while picking up a computer mouse and then navigating with it a short distance. 
 
-<img src="./images/wide_angle_test_1.png" width="800">
 <img src="./images/wide_angle_test_2.png" width="800">
 <img src="./images/wide_angle_test_3.png" width="800">
 
-## Limitations
-
-Limitations of this version include the following:
-
-+ The video is low resolution. 320x240 for each camera due to USB bandwidth issues. 640x480 would be much better. Hardware changes might make this possible in the future, but software is unlikely to improve the resolution with the current cameras.
-+ The video is a little distorted. It is slightly elongated in one direction for each camera. This distortion doesn't appear in 640x480 mode. It seems to be an issue with the 320x240 mode for these USB cameras. This could be corrected with software, but I'm hopeful that future hardware improvements will resolve this.
-+ The interface video has large unused black regions. The individual gripper and navigation videos could be cropped or otherwise transformed to make better use of the video display.
-
-# Table of Contents
+# Original Table of Contents
 
 + [Overview](#over)
   + [History](#hist)
@@ -119,7 +124,7 @@ Run the installation script.
 
 ```
 cd ~/catkin_ws/src/stretch_web_interface/bash_scripts/
-sudo ./web_interface_installation.sh
+./web_interface_installation.sh
 ```
 
 WARNING: The script uninstalls tornado using pip to avoid a rosbridge websocket immediate disconnection issue. This could break other software on your robot.
@@ -338,8 +343,7 @@ This section describes the steps we used to create an Amazon Lightsail instance 
   + A command like the following can then be used to login to your instance: `ssh -i /path/to/private-key.pem username@public-ip-address`.
 + While logged into your instance. 
   + Run `sudo apt-get update` to avoid installation issues.
-  + Install helpful packages.
-    + `sudo apt install emacs`
+  + Install the `net-tools` package, which will be used later. You might also want to install your preferred text editor, such as `emacs`.
     + `sudo apt install net-tools`
   + Configure Git.
     + `git config --global user.name "FIRST_NAME LAST_NAME"`
