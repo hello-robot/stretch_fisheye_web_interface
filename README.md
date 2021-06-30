@@ -1,14 +1,16 @@
 ![](./images/banner.png)
 
-# Wide-angle Cameras Interface
+# Fisheye Cameras Interface
 
-This repository holds a distinct version of the [original Stretch RE1 web interface](https://github.com/hello-robot/stretch_web_interface) that uses a fisheye gripper camera and a fisheye navigation camera. It specifically uses prototype fisheye camera accessories developed by [Hello Robot](https://hello-robot.com). If you're interested in fisheye cameras for the Stretch RE1, please post to [Hello Robot's forum](https://forum.hello-robot.com/) or email Hello Robot at <info@hello-robot.com>. The cameras and web interface are based on early prototypes for remote teleoperation developed at Georgia Tech and Hello Robot prior to the Stretch RE1. 
+This repository holds a distinct version of the [original Stretch RE1 web interface](https://github.com/hello-robot/stretch_web_interface) that uses two cameras with ultra wide-angle lenses ([fisheye lenses](https://en.wikipedia.org/wiki/Fisheye_lens)). One camera is attached to the robot's gripper and looks at the fingertips. The other camera is attached to the top of the robot and looks down at the robot's mobile base. These perspectives are useful for navigation and manipulation. 
+
+This interface specifically uses prototype fisheye camera accessories developed by [Hello Robot](https://hello-robot.com). If you're interested in fisheye cameras for the Stretch RE1, please post to [Hello Robot's forum](https://forum.hello-robot.com/) or email Hello Robot at <info@hello-robot.com>. The cameras and web interface are based on early prototypes for remote teleoperation developed at Georgia Tech and Hello Robot prior to the Stretch RE1. 
 
 <img src="./images/wide_angle_cameras.jpg" width="300">
 
-## Install the Wide-angle Web Interface
+## Install the Fisheye Web Interface
 
-To install the fisheye web interface, first follow the instructions in the [web-interface installation section](#install) below. Then, use the following commands to install the wide-angle cameras  with [install_gripper_and_navigation_cameras.sh](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/wide_angle_cameras/bash_scripts/install_gripper_and_navigation_cameras.sh). 
+To install the fisheye web interface, first follow the instructions in the [web-interface installation section](#install) below. Then, use the following commands to install the fisheye cameras  with [install_gripper_and_navigation_cameras.sh](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/main/bash_scripts/install_gripper_and_navigation_cameras.sh). 
 
 ```cd ~/catkin_ws/src/stretch_fisheye_web_interface/bash_scripts/```
 
@@ -16,13 +18,13 @@ To install the fisheye web interface, first follow the instructions in the [web-
 
 This script first installs udev rules for both cameras that create the `/dev/hello-gripper-camera` and `/dev/hello-navigation-camera` device symlinks. For these udev rules to work, no other devices should be plugged into the head and wrist USB ports, since the rules use the USB bus and port topology to distinguish the two cameras. The script then installs `usb_cam`, which is a ROS USB camera package. Finally, the script copies a configuration file to `/etc/modprobe.d` that configures the `uvcvideo` kernel module to work with the cameras. After running this installation script, you either need to unplug and replug the two cameras or reboot the Stretch RE1's NUC computer. 
 
-## Run the Wide-angle Web Interface
+## Run the Fisheye Web Interface
 
-To run the wide-angle web interface, you can use the [original quick start instructions](#quick) below.
+To run the fisheye web interface, you can use the [original quick start instructions](#quick) below.
 
-## Physical Installation of the Wide-angle Cameras 
+## Physical Installation of the Fisheye Cameras 
 
-The interface expects the wide-angle gripper camera to be attached as far down the gripper as it can be (i.e., as close to the fingers as it can be). It expects the navigation camera to be attached to the top of the head and positioned so that it is pointing straight down at the ground and looking at the center front of the mobile base. The top of the navigation camera should be pointed in the direction that the telescoping arm extends.
+The interface expects the fisheye gripper camera to be attached as far down the gripper as it can be (i.e., as close to the fingers as it can be). It expects the navigation camera to be attached to the top of the head and positioned so that it is pointing straight down at the ground and looking at the center front of the mobile base. The top of the navigation camera should be pointed in the direction that the telescoping arm extends.
 
 The gripper camera should be plugged into the wrist USB port, and the navigation camera should be plugged into the head USB port. Nothing else should be plugged into these ports, since bandwidth is limited and the udev rules use the USB port topology to find and distinguish the gripper and navigation cameras.
 
