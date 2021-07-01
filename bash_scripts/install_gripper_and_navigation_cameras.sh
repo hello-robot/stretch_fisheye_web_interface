@@ -6,8 +6,8 @@ echo "Starting gripper and navigation camera installation script."
 # UDEV FOR GRIPPER CAMERA
 echo ""
 echo "Adding udev rules for the gripper camera."
-echo "cd ~/catkin_ws/src/stretch_web_interface/"
-cd ~/catkin_ws/src/stretch_web_interface/
+echo "cd ~/catkin_ws/src/stretch_fisheye_web_interface/"
+cd ~/catkin_ws/src/stretch_fisheye_web_interface/
 echo "sudo cp ./89-hello-gripper-camera.rules /etc/udev/rules.d/"
 sudo cp ./89-hello-gripper-camera.rules /etc/udev/rules.d/
 echo "sudo udevadm control --reload"
@@ -18,8 +18,8 @@ echo ""
 # UDEV FOR NAVIGATION CAMERA
 echo ""
 echo "Adding udev rules for the navigation camera."
-echo "cd ~/catkin_ws/src/stretch_web_interface/"
-cd ~/catkin_ws/src/stretch_web_interface/
+echo "cd ~/catkin_ws/src/stretch_fisheye_web_interface/"
+cd ~/catkin_ws/src/stretch_fisheye_web_interface/
 echo "sudo cp ./88-hello-navigation-camera.rules /etc/udev/rules.d/"
 sudo cp ./88-hello-navigation-camera.rules /etc/udev/rules.d/
 echo "sudo udevadm control --reload"
@@ -38,8 +38,8 @@ echo "Done."
 # TIME AT LOW RESOLUTION (320x240) WITH UNCOMPRESSED YUYV 4:2:2 MODE
 echo ""
 echo "Change default uvcvideo kernal module settings to enable two quirks: UVC_QUIRK_RESTRICT_FRAME_RATE and UVC_QUIRK_FIX_BANDWIDTH."
-echo "cd ~/catkin_ws/src/stretch_web_interface/"
-cd ~/catkin_ws/src/stretch_web_interface/
+echo "cd ~/catkin_ws/src/stretch_fisheye_web_interface/"
+cd ~/catkin_ws/src/stretch_fisheye_web_interface/
 echo "sudo cp ./uvcvideo.conf /etc/modprobe.d/"
 sudo cp ./uvcvideo.conf /etc/modprobe.d/
 echo "sudo rmmod uvcvideo"

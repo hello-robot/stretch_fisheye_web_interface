@@ -27,7 +27,7 @@ echo "Done."
 # PACKAGES VIA NPM
 echo ""
 echo "Installing web-interface Node packages using npm."
-cd ~/catkin_ws/src/stretch_web_interface/
+cd ~/catkin_ws/src/stretch_fisheye_web_interface/
 echo "Update to latest version of npm."
 sudo npm install -g npm
 echo "Install packages with npm."
@@ -49,7 +49,7 @@ systemctl status mongodb
 echo ""
 echo "Load developer credential database for robots and operators into MongoDB."
 echo "WARNING: THESE CREDENTIALS ARE WIDELY KNOWN AND SHOULD NOT BE USED OUTSIDE OF SECURE INTERNAL TESTING."
-cd ~/catkin_ws/src/stretch_web_interface/
+cd ~/catkin_ws/src/stretch_fisheye_web_interface/
 mongorestore -d node-auth ./mongodb/test-users-db-20171021/node-auth/
 echo "Done."
 

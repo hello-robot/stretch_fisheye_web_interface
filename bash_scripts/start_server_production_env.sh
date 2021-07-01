@@ -25,8 +25,8 @@ sudo systemctl start redis.service
 
 echo ""
 echo "attempting to start the web server..."
-echo "cd /home/ubuntu/repos/stretch_web_interface/"
-cd /home/ubuntu/repos/stretch_web_interface/
+echo "cd /home/ubuntu/repos/stretch_fisheye_web_interface/"
+cd /home/ubuntu/repos/stretch_fisheye_web_interface/
 echo "sudo --preserve-env node ./bin/www &"
 sudo --preserve-env node ./bin/www &
 

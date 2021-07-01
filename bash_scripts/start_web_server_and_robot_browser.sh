@@ -33,8 +33,8 @@ echo ""
 
 echo ""
 echo "attempt to launch the browser for the robot and log in"
-echo "roscd stretch_web_interface/"
-roscd stretch_web_interface/
+echo "roscd stretch_fisheye_web_interface/"
+roscd stretch_fisheye_web_interface/
 echo "node ./robot_teleop_start.js"
 node ./start_robot_browser.js
 echo ""

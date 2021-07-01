@@ -21,7 +21,7 @@ echo "Done."
 # PACKAGES VIA NPM
 echo ""
 echo "Installing web-interface Node packages using npm."
-cd ~/repos/stretch_web_interface/
+cd ~/repos/stretch_fisheye_web_interface/
 echo "Update to latest version of npm."
 sudo npm install -g npm
 echo "Install packages with npm."
@@ -50,7 +50,7 @@ echo ""
 echo "Install coturn for the web server."
 sudo apt-get --yes install coturn
 echo "Setup coturn.service."
-sudo cp ~/repos/stretch_web_interface/coturn.service /etc/systemd/system/
+sudo cp ~/repos/stretch_fisheye_web_interface/coturn.service /etc/systemd/system/
 echo "Done."
 
 

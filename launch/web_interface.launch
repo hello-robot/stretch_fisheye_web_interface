@@ -1,11 +1,11 @@
 <launch>
 
   <!-- GRIPPER CAMERA -->
-  <include file="$(find stretch_web_interface)/launch/gripper_camera.launch"></include>
+  <include file="$(find stretch_fisheye_web_interface)/launch/gripper_camera.launch"></include>
   <!-- -->
 
   <!-- NAVIGATION CAMERA -->
-  <include file="$(find stretch_web_interface)/launch/navigation_camera.launch"></include>
+  <include file="$(find stretch_fisheye_web_interface)/launch/navigation_camera.launch"></include>
   <!-- -->
   
   <!-- STRETCH DRIVER -->
