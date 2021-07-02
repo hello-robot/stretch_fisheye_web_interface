@@ -18,19 +18,28 @@ To install the fisheye web interface, first follow the instructions in the [web-
 
 This script first installs udev rules for both cameras that create the `/dev/hello-gripper-camera` and `/dev/hello-navigation-camera` device symlinks. For these udev rules to work, no other devices should be plugged into the head and wrist USB ports, since the rules use the USB bus and port topology to distinguish the two cameras. The script then installs `usb_cam`, which is a ROS USB camera package. Finally, the script copies a configuration file to `/etc/modprobe.d` that configures the `uvcvideo` kernel module to work with the cameras. After running this installation script, you either need to unplug and replug the two cameras or reboot the Stretch RE1's NUC computer. 
 
-## Run the Fisheye Web Interface
+### Adjust the Camera Settings
 
-To run the fisheye web interface, you can use the [original quick start instructions](#quick) below.
+Currently, the camera settings need to be adjusted manually. We hope to improve this situation in the future. Without adjustment, the video streams can be unusually dark, bright, or otherwise problematic. Open the following two launch files to see the current camera settings. You will likely need to adjust the values for your specific cameras. 
 
-## Physical Installation of the Fisheye Cameras 
+
+```./launch/gripper_camera.launch```
+   
+```./launch/navigation_camera.launch```
+
+To determine how to set the parameters, we recommend you use `guvcview`. You can install it with the following command:
+
+`sudo apt install guvcview`
+
+Now, go to the "Show Applications" menu, search for `guvcview`, run the application, and connect it to one of the USB 2.0 cameras. Once `guvcview` is running, you can use it to see video from the camera while adjusting the camera's settings. Once you find settings you like, you can edit the appropriate launch file. Then, you can do the same thing with the other camera.  
+
+### Adjust the Poses of the Fisheye Cameras 
 
 The interface expects the fisheye gripper camera to be attached as far down the gripper as it can be (i.e., as close to the fingers as it can be). It expects the navigation camera to be attached to the top of the head and positioned so that it is pointing straight down at the ground and looking at the center front of the mobile base. The top of the navigation camera should be pointed in the direction that the telescoping arm extends.
 
 The gripper camera should be plugged into the wrist USB port, and the navigation camera should be plugged into the head USB port. Nothing else should be plugged into these ports, since bandwidth is limited and the udev rules use the USB port topology to find and distinguish the gripper and navigation cameras.
 
-## Examples of Use
-
-The following screenshot shows the new high-resolution interface, which uses 1024x768 resolution videos from the gripper and navigation cameras at 6 frames per second. Trading frames per second for higher resolution appears to be worthwhile, since the robot moves slowly and haptic feedback (joint torque visualization) updates frequently with low latency. Rapid haptic feedback helps compensate for the low video rate during teleoperation. For example, the operator can notice contact and send a compensatory command to the robot without video. The rate and latency of haptic feedback and commands to the robot are determined by the WebRTC real-time data channel, which is distinct from the WebRTC audio and video.  
+When you run the interface later, it should look like the following screenshots. Adjust the poses of the cameras accordingly.
 
 **Manipulation Mode**
 
@@ -39,6 +48,30 @@ The following screenshot shows the new high-resolution interface, which uses 102
 **Navigation Mode**
 
 <img src="./images/high_resolution_wide_angle_example_2.png" width="800">
+
+### Make Sure the Device Symlinks are Correct
+
+The cameras have identical identifiers, so your robot's device symlinks (`/dev/hello-gripper-camera` and `/dev/hello-navigation-camera`) might point to the wrong cameras. The screenshots above show you where the two cameras should be in the interface. If the navigation camera video is showing where the gripper camera video should be showing, then you'll need to edit the following two files using `sudo` privileges: 
+
+```/etc/udev/rules.d/88-hello-navigation-camera.rules```
+
+```/etc/udev/rules.d/89-hello-gripper-camera.rules```
+
+You should only need to make the following changes and then reboot the robot's computer: 
+
+```KERNELS=="1-1.3.*" changed to KERNELS=="1-1.2.*"```
+
+```KERNELS=="1-1.2.*" changed to KERNELS=="1-1.3.*"```
+
+If this doesn't work, please let us know and we'll help you find a solution. 
+
+## Run the Fisheye Web Interface
+
+To run the fisheye web interface, you can use the [original quick start instructions](#quick) below.
+
+## Resolution vs. Frames Per Second
+
+The current fisheye camera system can only be used a low resolution at a high frame rate or high resolution at a low frame rate. We chose to use 1024x768 resolution videos from the gripper and navigation cameras at 6 frames per second. Trading frames per second for higher resolution appears to be worthwhile, since the robot moves slowly and haptic feedback (joint torque visualization) updates frequently with low latency. Rapid haptic feedback helps compensate for the low video rate during teleoperation. For example, the operator can notice contact and send a compensatory command to the robot without video. The rate and latency of haptic feedback and commands to the robot are determined by the WebRTC real-time data channel, which is distinct from the WebRTC audio and video.  
 
 # Original Table of Contents
 
