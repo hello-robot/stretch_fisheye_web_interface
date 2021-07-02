@@ -1,4 +1,29 @@
 
+// Continuous actions
+
+var activeAction = null;
+
+function startAction(actionName) {
+  console.log("Starting action: " + actionName);
+  activeAction = actionName;
+}
+
+function stopAction() {
+  console.log("Stopping action: " + activeAction);
+  activeAction = null;
+}
+
+var updateFrequency = 200; //milliseconds
+function updateInterface() {
+  if (activeAction != null) {
+    window[activeAction]();
+  }
+}
+
+window.setInterval(updateInterface, updateFrequency);
+
+// Discrete (one time) actions
+
 
 function lookLeft() {
     var cmd = {type:"command",
