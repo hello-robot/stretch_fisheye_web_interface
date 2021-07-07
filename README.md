@@ -369,7 +369,7 @@ One of the challenges for remote teleoperation is that browsers on different LAN
 
 ### Turn on the Content Security Policy (CSP)
 
-By default the [Content Security Policy (CSP) for helmet](https://www.npmjs.com/package/helmet-csp) is disabled, since it has resulted in challenges for developers and possibly interfered with use. The CSP should be enabled for deployed systems on the Internet. Having it deactivated is only appropriate for a secure local area network (LAN) with a strong firewall. To activate it, set `use_content_security_policy` to `true` in [`app.js`](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/main/app.js), such as at [this location](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/e444b7a3e7cade292431ec1fe6c1fd2cc85eba66/app.js#L59) in one version of the code.
+By default the [Content Security Policy (CSP) for helmet](https://www.npmjs.com/package/helmet-csp) is enabled. The CSP should be enabled for deployed systems on the Internet. Having it disabled is only appropriate for a secure local area network (LAN) with a strong firewall. For unknown reasons, the previous approach to disabling the CSP is not functioning. In the past, one would disable it by setting `use_content_security_policy` to `false` in [`app.js`](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/main/app.js), such as at [this location](https://github.com/hello-robot/stretch_fisheye_web_interface/blob/e444b7a3e7cade292431ec1fe6c1fd2cc85eba66/app.js#L59) in one version of the code. 
 
 ### Amazon Lightsail Setup in Brief
 

@@ -56,7 +56,7 @@ var app = express();
 console.log('use helmet');
 app.use(helmet());
 
-var use_content_security_policy = false;
+var use_content_security_policy = true;
 
 if (use_content_security_policy) {
     console.log('using a content security policy');
@@ -71,7 +71,7 @@ if (use_content_security_policy) {
 } else {
     // Disable the content security policy. This is helpful during
     // development, but risky when deployed.
-    console.log('WARNING: Not using a content security policy. This risky when deployed!');
+    console.log('WARNING: Not using a content security policy. This is risky when deployed!');
     app.use(
 	helmet({
 	    contentSecurityPolicy: false,
