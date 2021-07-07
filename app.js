@@ -56,7 +56,7 @@ var app = express();
 console.log('use helmet');
 app.use(helmet());
 
-var use_content_security_policy = true
+var use_content_security_policy = false
 
 if (use_content_security_policy) {
     console.log('using a content security policy');
