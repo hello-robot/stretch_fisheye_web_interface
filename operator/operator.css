@@ -150,6 +150,7 @@
 .switch-2 {
   display: inline-block;
   position: relative;
+  left: 20px;
   /*margin: 20px auto;*/
   height: 26px; /*26px;*/
   /* width:  calc(var(--mode-button-width) * 6); */
@@ -213,6 +214,18 @@
     left: calc(var(--mode-button-width) * 1);
 }
 
+.switch-input:checked + .switch-label-2 ~ .switch-selection {
+    left: calc(var(--mode-button-width) * 2); 
+}
+
+.switch-input:checked + .switch-label-3 ~ .switch-selection {
+    left: calc(var(--mode-button-width) * 3);
+}
+
+.switch-input:checked + .switch-label-4 ~ .switch-selection {
+    left: calc(var(--mode-button-width) * 4);
+}
+
 
 .switch-label-sm {
   position: relative;
@@ -251,7 +264,7 @@
   z-index: 5;
   top: 0px;
   left: 0px;
-  width: 50px;
+  width: var(--mode-button-width);
   height: 22px;
   background: transparent;
   border: solid 3px #000000;
