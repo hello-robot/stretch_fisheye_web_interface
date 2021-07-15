@@ -503,7 +503,7 @@ var headCommands = {
 var driveCommands = {
     "forward": function(size) {
       console.log('drive: forward command received...executing');
-      let vel = driveTransV[modifiers[size]];
+      let vel = -driveTransV[modifiers[size]];
       baseTranslate(driveTransMedDist, vel);
       // executeCommandBySize(size, baseTranslate,
       //                        [-10.0, 200.0], //dist (mm), speed (mm/s)
@@ -587,13 +587,13 @@ var armCommands = {
 
 
 var wristCommands = {
-    "in": function(nothing) {
+    "in": function(size) {
       console.log('wrist: wrist_in command received...executing');
       let vel = wristV[modifiers[size]];
       wristMove(wristMedDist, vel)
       //wristMove(0.1)
     },
-    "out": function(nothing) {
+    "out": function(size) {
       console.log('wrist: wrist_out command received...executing');
       let vel = wristV[modifiers[size]];
       wristMove(-wristMedDist, vel)
