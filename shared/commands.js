@@ -464,8 +464,6 @@ for (let i=0; i<vScales.length; i++){
   liftV.push(s*liftMedV);
   extendV.push(s*extendMedV);
   wristV.push(s*wristMedV);
-
-  console.log(headV);
 }
 
 var headCommands = {
