@@ -1,10 +1,19 @@
 
+var modifiers = {"verysmall":0, "small":1, "medium":2, "large":3, "verylarge":4};
+var currentV = "medium";
+
+function setVelocity(newV) {
+  if (Object.keys(modifiers).includes(newV))
+    currentV = newV;
+  else
+    console.log("Invalid velocity: " + newV);
+}
 
 function lookLeft() {
     var cmd = {type:"command",
                subtype:"head",
                name:"left",
-               modifier:"medium"};
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -12,7 +21,7 @@ function lookRight() {
     var cmd = {type:"command",
                subtype:"head",
                name:"right",
-               modifier:"medium"};
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -20,7 +29,7 @@ function lookUp() {
     var cmd = {type:"command",
                subtype:"head",
                name:"up",
-               modifier:"medium"};
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -28,7 +37,15 @@ function lookDown() {
     var cmd = {type:"command",
                subtype:"head",
                name:"down",
-               modifier:"medium"};
+               modifier:currentV};
+    sendData(cmd);
+}
+
+function moveForward() {
+    var cmd = {type:"command",
+               subtype:"drive",
+               name:"forward",
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -48,6 +65,14 @@ function moveForwardSmall() {
     sendData(cmd);
 }
 
+function moveBackward() {
+    var cmd = {type:"command",
+               subtype:"drive",
+               name:"backward",
+               modifier:currentV};
+    sendData(cmd);
+}
+
 function moveBackwardMedium() {
     var cmd = {type:"command",
                subtype:"drive",
@@ -61,6 +86,14 @@ function moveBackwardSmall() {
                subtype:"drive",
                name:"backward",
                modifier:"small"};
+    sendData(cmd);
+}
+
+function turnLeft() {
+    var cmd = {type:"command",
+               subtype:"drive",
+               name:"turn_left",
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -80,6 +113,14 @@ function turnLeftSmall() {
     sendData(cmd);
 }
 
+function turnRight() {
+    var cmd = {type:"command",
+               subtype:"drive",
+               name:"turn_right",
+               modifier:currentV};
+    sendData(cmd);
+}
+
 function turnRightMedium() {
     var cmd = {type:"command",
                subtype:"drive",
@@ -93,6 +134,14 @@ function turnRightSmall() {
                subtype:"drive",
                name:"turn_right",
                modifier:"small"};
+    sendData(cmd);
+}
+
+function liftUp() {
+    var cmd = {type:"command",
+               subtype:"lift",
+               name:"up",
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -112,6 +161,14 @@ function liftUpSmall() {
     sendData(cmd);
 }
 
+function liftDown() {
+    var cmd = {type:"command",
+               subtype:"lift",
+               name:"down",
+               modifier:currentV};
+    sendData(cmd);
+}
+
 function liftDownMedium() {
     var cmd = {type:"command",
                subtype:"lift",
@@ -128,6 +185,14 @@ function liftDownSmall() {
     sendData(cmd);
 }
 
+function armRetract() {
+    var cmd = {type:"command",
+               subtype:"arm",
+               name:"retract",
+               modifier:currentV};
+    sendData(cmd);
+}
+
 function armRetractMedium() {
     var cmd = {type:"command",
                subtype:"arm",
@@ -141,6 +206,14 @@ function armRetractSmall() {
                subtype:"arm",
                name:"retract",
                modifier:"small"};
+    sendData(cmd);
+}
+
+function armExtend() {
+    var cmd = {type:"command",
+               subtype:"arm",
+               name:"extend",
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -254,7 +327,7 @@ function wristIn() {
     var cmd = {type:"command",
                subtype:"wrist",
                name:"in",
-               modifier:"medium"};
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -262,7 +335,7 @@ function wristOut() {
     var cmd = {type:"command",
                subtype:"wrist",
                name:"out",
-               modifier:"medium"};
+               modifier:currentV};
     sendData(cmd);
 }
 
@@ -363,71 +436,107 @@ function executeCommandBySize(size, command, smallCommandArgs, mediumCommandArgs
     }
 }
 
+/*
+* VELOCITY SETTINGS
+*/
+
+var headMedDist = 0.1;
+var driveTransMedDist = 100.0;
+var driveRotMedDist = 10.0;
+var liftMedDist = 100.0;
+var extendMedDist = 100.0;
+var wristMedDist = 0.1;
+
+var headMedV = 0.1;
+var driveTransMedV = 0.02;
+var driveRotMedV = 0.1;
+var liftMedV = 0.02;
+var extendMedV = 0.02;
+var wristMedV = 0.1;
+
+var vScales = [0.1, 0.5, 1.0, 1.5, 2.0];
+
+var headV = [];
+var driveTransV = [];
+var driveRotV = [];
+var liftV = [];
+var extendV = [];
+var wristV = [];  
+
+for (let i=0; i<vScales.length; i++){
+  let s = vScales[i];
+  headV.push(s*headMedV);
+  driveTransV.push(s*driveTransMedV);
+  driveRotV.push(s*driveRotMedV);
+  liftV.push(s*liftMedV);
+  extendV.push(s*extendMedV);
+  wristV.push(s*wristMedV);
+}
 
 var headCommands = {
     "up": function(size) {
-        console.log('head: up command received...executing');
-	headTilt(0.1)
+      console.log('head: up command received...executing');
+      let vel = headV[modifiers[size]];
+      headTilt(vel);
+      // headTilt(0.1)
     },
     "down": function(size) {
-        console.log('head: down command received...executing');
-	headTilt(-0.1)
+      console.log('head: down command received...executing');
+      let vel = headV[modifiers[size]];
+      headTilt(-vel);
+      // headTilt(-0.1)
     },
     "left": function(size) {
-        console.log('head: left command received...executing');
-	headPan(0.1)
+      console.log('head: left command received...executing');
+      let vel = headV[modifiers[size]];
+      headPan(vel);
+      //headPan(0.1)
     },
     "right": function(size) {
-        console.log('head: right command received...executing');
-	headPan(-0.1)
+      console.log('head: right command received...executing');
+      let vel = headV[modifiers[size]];
+      headPan(-vel);
+      // headPan(-0.1)
     }
 }  
 
 var driveCommands = {
     "forward": function(size) {
-        console.log('drive: forward command received...executing');
-	
-        // executeCommandBySize(size, baseTranslate,
-        //                      [-1.0, 10.0], // -1cm at 10 cm/s
-        //                      [-10.0, 40.0]); // -10cm at 40 cm/s
-
-        executeCommandBySize(size, baseTranslate,
-                             [-10.0, 200.0], //dist (mm), speed (mm/s)
-                             [-100.0, 200.0]); //dist (mm), speed (mm/s)
+      console.log('drive: forward command received...executing');
+      let vel = -driveTransV[modifiers[size]];
+      baseTranslate(driveTransMedDist, vel);
+      // executeCommandBySize(size, baseTranslate,
+      //                        [-10.0, 200.0], //dist (mm), speed (mm/s)
+      //                        [-100.0, 200.0]); //dist (mm), speed (mm/s)
 	
     },
     "backward": function(size) {
         console.log('drive: backward command received...executing');
 
-	// executeCommandBySize(size, baseTranslate,
-        //                      [1.0, 10.0], // 1cm at 10 cm/s
-        //                      [10.0, 40.0]); // 10cm at 40 cm/s
-	
-        executeCommandBySize(size, baseTranslate,
-                             [10.0, 200.0], //dist (mm), speed (mm/s)
-                             [100.0, 200.0]); //dist (mm), speed (mm/s)
+      let vel = driveTransV[modifiers[size]];
+      baseTranslate(driveTransMedDist, vel);
+        // executeCommandBySize(size, baseTranslate,
+        //                      [10.0, 200.0], //dist (mm), speed (mm/s)
+        //                      [100.0, 200.0]); //dist (mm), speed (mm/s)
     },
     "turn_right": function(size) {
         console.log('drive: turn_right command received...executing');
 
-	// executeCommandBySize(size, baseTurn,
-        //                      [1.0, 10.0], // 1deg at 10 cm/s wheel velocity 
-        //                      [10.0, 20.0]); // 10deg at 20 cm/s wheel velocity 
-
-        executeCommandBySize(size, baseTurn,
-                             [1.0, 300.0], // angle (deg), angular speed (deg/s)
-                             [10.0, 300.0]); // angle (deg), angular speed (deg/s)
+      let vel = driveRotV[modifiers[size]];
+      baseTurn(driveRotMedDist, vel);
+        // executeCommandBySize(size, baseTurn,
+        //                      [1.0, 300.0], // angle (deg), angular speed (deg/s)
+        //                      [10.0, 300.0]); // angle (deg), angular speed (deg/s)
 
     },
     "turn_left": function(size) {
         console.log('drive: turn_left command received...executing');
-        // executeCommandBySize(size, baseTurn,
-        //                      [-1.0, 10.0], // -1deg at 10 cm/s wheel velocity 
-        //                      [-10.0, 20.0]); // -10deg at 20 cm/s wheel velocity
 
-	executeCommandBySize(size, baseTurn,
-                             [-1.0, 300.0], // angle (deg), angular speed (deg/s)
-                             [-10.0, 300.0]); // angle (deg), angular speed (deg/s)
+      let vel = driveRotV[modifiers[size]];
+      baseTurn(-driveRotMedDist, vel);
+      	// executeCommandBySize(size, baseTurn,
+       //                       [-1.0, 300.0], // angle (deg), angular speed (deg/s)
+       //                       [-10.0, 300.0]); // angle (deg), angular speed (deg/s)
     }
 }  
 
@@ -435,26 +544,21 @@ var liftCommands = {
     "up": function(size) {
         console.log('lift: up command received...executing');
 
-	// executeCommandBySize(size, lift,
-        //                      [1.0, 10.0], // 1cm at 10 cm/s
-        //                      [5.0, 20.0]); // 5cm at 30 cm/s
-	
-	executeCommandBySize(size, liftMove,
-                             [10.0, -1], // dist (mm), timeout (s)
-                             [100.0, -1]); // dist (mm), timeout (s)
-   
-	
+      let vel = liftV[modifiers[size]];
+      liftMove(liftMedDist, -1, vel);
+      	// executeCommandBySize(size, liftMove,
+       //                       [10.0, -1], // dist (mm), timeout (s)
+       //                       [100.0, -1]); // dist (mm), timeout (s)
+   	
     },
     "down": function(size) {
         console.log('lift: down command received...executing');
 	
-        // executeCommandBySize(size, lift,
-        //                      [-1.0, 10.0], // -1cm at 10 cm/s
-        //                      [-5.0, 20.0]); // -5cm at 30 cm/s
-
-	executeCommandBySize(size, liftMove,
-                             [-10.0, -1], // dist (mm), timeout (s)
-                             [-100.0, -1]); // dist (mm), timeout (s)
+      let vel = liftV[modifiers[size]];
+      liftMove(-liftMedDist, -1, vel);
+      	// executeCommandBySize(size, liftMove,
+       //                       [-10.0, -1], // dist (mm), timeout (s)
+       //                       [-100.0, -1]); // dist (mm), timeout (s)
 
     }
 }  
@@ -462,40 +566,42 @@ var liftCommands = {
 var armCommands = {
     "extend": function(size) {
         console.log('arm: extend command received...executing');
-        // executeCommandBySize(size, arm,
-        //                      [1.0, 10.0], // 1cm at 10 cm/s
-        //                      [5.0, 20.0]); // 5cm at 20 cm/s
 
-	executeCommandBySize(size, armMove,
-                             [10.0, -1], // dist (mm), timeout (s)
-                             [100.0, -1]); // dist (mm), timeout (s)
+      let vel = extendV[modifiers[size]];
+      armMove(extendMedDist, -1, vel);
+      	// executeCommandBySize(size, armMove,
+       //                       [10.0, -1], // dist (mm), timeout (s)
+       //                       [100.0, -1]); // dist (mm), timeout (s)
     },
     "retract": function(size) {
         console.log('arm: retract command received...executing');
-        // executeCommandBySize(size, arm,
-        //                      [-1.0, 10.0], // -1cm at 10 cm/s
-        //                      [-5.0, 20.0]); // -5cm at 20 cm/s
-
-	executeCommandBySize(size, armMove,
-                             [-10.0, -1], // dist (mm), timeout (s)
-                             [-100.0, -1]); // dist (mm), timeout (s)
+      
+      let vel = extendV[modifiers[size]];
+      armMove(-extendMedDist, -1, vel);
+      	// executeCommandBySize(size, armMove,
+       //                       [-10.0, -1], // dist (mm), timeout (s)
+       //                       [-100.0, -1]); // dist (mm), timeout (s)
 
     }
 }  
 
 
 var wristCommands = {
-    "in": function(nothing) {
-	console.log('wrist: wrist_in command received...executing');
-	wristMove(0.1)
+    "in": function(size) {
+      console.log('wrist: wrist_in command received...executing');
+      let vel = wristV[modifiers[size]];
+      wristMove(wristMedDist, vel)
+      //wristMove(0.1)
     },
-    "out": function(nothing) {
-	console.log('wrist: wrist_out command received...executing');
-	wristMove(-0.1)
+    "out": function(size) {
+      console.log('wrist: wrist_out command received...executing');
+      let vel = wristV[modifiers[size]];
+      wristMove(-wristMedDist, vel)
+      //wristMove(-0.1)
     },    
     "stop_all_motion": function(nothing) {
-	console.log('wrist: stop all motion command received...executing');
-	wristStopMotion();
+      console.log('wrist: stop all motion command received...executing');
+      wristStopMotion();
     },
     "bend_velocity": function(deg_per_sec) {
 	console.log('wrist: bend velocity of ' + deg_per_sec + ' command received...executing');
