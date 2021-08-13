@@ -6,13 +6,13 @@ function generateVideoDimensions() {
     // Full dimensions of the WebRTC video transmitted from the robot
     // to the operator. Use only the navigation camera and the gripper
     // camera side by side.
-    var iw = 2048;
-    var ih = 768;
+    var iw = 1600; //2048;
+    var ih = 600; //768;
 
     // wide-angle camera dimensions (i.e., gripper and navigation
     // cameras)
-    var camW = 1024;
-    var camH = 768;
+    var camW = 800; //1024;
+    var camH = 600; //768;
 
     var aspectRatio = camW/camH;
 

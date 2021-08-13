@@ -14,6 +14,12 @@
 # device file name. You can often find the device file name by running
 # dmesg from the command line right after plugging in the device.
 #
+# udevadm info -a /dev/video3
+#
+# udevadm info -a /dev/video3 | grep serial
+#    ATTRS{serial}=="SN20210701004"
+#    ATTRS{serial}=="0000:00:14.0"
+#
 # udevadm info -a /dev/ttyUSB0
 #
 # REFERENCES
@@ -21,4 +27,4 @@
 # http://www.linuxfromscratch.org/lfs/view/6.2/chapter07/symlinks.html
 #
 
-KERNEL=="video*", KERNELS=="1-1.3.*", ATTRS{idVendor}=="05a3", ATTRS{idProduct}=="9230", MODE:="0777", SYMLINK+="hello-gripper-camera"
+KERNEL=="video*", ATTRS{serial}=="SN20210701004", ATTRS{idVendor}=="0bda", ATTRS{idProduct}=="5842", MODE:="0777", SYMLINK+="hello-gripper-camera"
